@@ -19,25 +19,30 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AnimatedGameObject.cpp" />
-    <ClCompile Include="Bird.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Pipe.cpp" />
-    <ClCompile Include="PipePair.cpp" />
-    <ClCompile Include="PipePairsManager.cpp" />
+    <ClCompile Include="src\AnimatedGameObject.cpp" />
+    <ClCompile Include="src\Bird.cpp" />
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\GameObject.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Pipe.cpp" />
+    <ClCompile Include="src\PipePair.cpp" />
+    <ClCompile Include="src\PipePairsManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AnimatedGameObject.hpp" />
-    <ClInclude Include="Bird.hpp" />
-    <ClInclude Include="Collider.hpp" />
-    <ClInclude Include="Config.hpp" />
-    <ClInclude Include="Game.hpp" />
-    <ClInclude Include="GameObject.hpp" />
-    <ClInclude Include="Pipe.hpp" />
-    <ClInclude Include="PipePair.hpp" />
-    <ClInclude Include="PipePairsManager.hpp" />
+    <ClInclude Include="src\AnimatedGameObject.hpp" />
+    <ClInclude Include="src\Bird.hpp" />
+    <ClInclude Include="src\Collider.hpp" />
+    <ClInclude Include="src\Config.hpp" />
+    <ClInclude Include="src\Game.hpp" />
+    <ClInclude Include="src\GameObject.hpp" />
+    <ClInclude Include="src\Pipe.hpp" />
+    <ClInclude Include="src\PipePair.hpp" />
+    <ClInclude Include="src\PipePairsManager.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitattributes" />
+    <None Include=".gitignore" />
+    <None Include="README.md" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
