@@ -9,8 +9,7 @@
 
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 {
-	Game* game = new Game();
-	*appstate = game;
+	*appstate = new Game();
 	return SDL_APP_CONTINUE;
 }
 

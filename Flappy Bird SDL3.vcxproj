@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Ground.cpp" />
     <ClCompile Include="src\AnimatedGameObject.cpp" />
     <ClCompile Include="src\Bird.cpp" />
     <ClCompile Include="src\Game.cpp" />
@@ -29,6 +30,7 @@
     <ClCompile Include="src\PipePairsManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Ground.hpp" />
     <ClInclude Include="src\AnimatedGameObject.hpp" />
     <ClInclude Include="src\Bird.hpp" />
     <ClInclude Include="src\Collider.hpp" />
@@ -42,6 +44,7 @@
   <ItemGroup>
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
+    <None Include=".gitmodules" />
     <None Include="README.md" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -97,7 +100,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\kolia\source\repos\Flappy Bird SDL3\SDL3-3.2.10\include;C:\Users\kolia\source\repos\Flappy Bird SDL3\SDL3_image-3.2.4\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\SDL3-3.2.10\include;$(SolutionDir)\SDL3_image-3.2.4\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -138,7 +141,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL3.lib;SDL3_test.lib;SDL3_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\kolia\source\repos\Flappy Bird SDL3\SDL3-3.2.10\lib\x64;C:\Users\kolia\source\repos\Flappy Bird SDL3\SDL3_image-3.2.4\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\SDL3-3.2.10\lib\x64;$(SolutionDir)\SDL3_image-3.2.4\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

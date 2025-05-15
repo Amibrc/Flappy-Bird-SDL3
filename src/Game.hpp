@@ -6,6 +6,7 @@
 #include "GameObject.hpp"
 #include "Bird.hpp"
 #include "PipePairsManager.hpp"
+#include "Ground.hpp"
 
 class Game
 {
@@ -14,7 +15,8 @@ public:
 	SDL_Renderer* renderer;
 	Bird* bird;
 	GameObject* background;
-	GameObject* grass;
+	Ground* ground;
+	GameObject* gameOverBanner;
 	PipePairsManager* pipePairsManager;
 
 	Game();

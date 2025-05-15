@@ -7,9 +7,6 @@
 class Bird : public AnimatedGameObject
 {
 public:
-	int velocity;
-	int gravity;
-
 	Bird(SDL_Renderer* renderer, float x, float y);
 
 	void Update() override;
@@ -20,8 +17,9 @@ public:
 
 	void Death();
 
-	inline bool IsAlive() { return alive; }
+	inline bool IsAlive() const { return alive; }
 
 private:
+	float velocity;
 	bool alive;
 };

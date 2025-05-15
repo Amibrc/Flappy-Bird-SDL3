@@ -8,9 +8,8 @@ class PipePairsManager
 {
 public:
 	PipePair* pipePairs[3];
-	float distance;
 
-	PipePairsManager(SDL_Renderer* renderer, float distance);
+	PipePairsManager(SDL_Renderer* renderer);
 
 	~PipePairsManager();
 

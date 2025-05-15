@@ -6,7 +6,8 @@
 AnimatedGameObject::AnimatedGameObject(SDL_Renderer* renderer,
 										float x, float y,
 										const char* const files[], size_t count,
-										Uint64 frameDuration)
+										Uint64 frameDuration,
+										bool isPosCenter)
 	: currentTextureIndex(0), lastTicks(0), frameDuration(frameDuration)
 {
 	textures.reserve(count);
@@ -21,7 +22,13 @@ AnimatedGameObject::AnimatedGameObject(SDL_Renderer* renderer,
 		}
 	}
 
-	rect = { x, y, (float)textures[currentTextureIndex]->w, (float)textures[currentTextureIndex]->h };
+	if (isPosCenter)
+		rect = { x - (float)textures[currentTextureIndex]->w / 2,
+				y - (float)textures[currentTextureIndex]->h / 2,
+				(float)textures[currentTextureIndex]->w,
+				(float)textures[currentTextureIndex]->h };
+	else
+		rect = { x, y, (float)textures[currentTextureIndex]->w, (float)textures[currentTextureIndex]->h };
 }
 
 AnimatedGameObject::~AnimatedGameObject()
@@ -36,7 +43,7 @@ void AnimatedGameObject::RenderDraw(SDL_Renderer* renderer) const
 void AnimatedGameObject::Update()
 {
 	Uint64 nowTicks = SDL_GetTicks();
-	if (nowTicks - lastTicks > frameDuration)
+	if (nowTicks - lastTicks >= frameDuration)
 	{
 		++currentTextureIndex %= textures.size();
 		lastTicks = nowTicks;

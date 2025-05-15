@@ -21,7 +21,4 @@ public:
     void SetY(float newY);
 
     void SetRandomGapPosition();
-
-private:
-    unsigned int gap;
 };

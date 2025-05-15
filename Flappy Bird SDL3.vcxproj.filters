@@ -15,29 +15,32 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Bird.cpp">
-      <Filter>Файлы ресурсов</Filter>
-    </ClCompile>
     <ClCompile Include="src\main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\AnimatedGameObject.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bird.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
     <ClCompile Include="src\Game.cpp">
-      <Filter>Файлы ресурсов</Filter>
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\GameObject.cpp">
-      <Filter>Файлы ресурсов</Filter>
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\Pipe.cpp">
-      <Filter>Файлы ресурсов</Filter>
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\PipePair.cpp">
-      <Filter>Файлы ресурсов</Filter>
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\PipePairsManager.cpp">
-      <Filter>Файлы ресурсов</Filter>
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\AnimatedGameObject.cpp">
-      <Filter>Файлы ресурсов</Filter>
+    <ClCompile Include="src\Ground.cpp">
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,10 +71,14 @@
     <ClInclude Include="src\AnimatedGameObject.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="src\Ground.hpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
     <None Include=".gitignore" />
     <None Include=".gitattributes" />
+    <None Include=".gitmodules" />
   </ItemGroup>
 </Project>

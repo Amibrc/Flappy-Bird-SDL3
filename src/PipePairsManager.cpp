@@ -4,11 +4,10 @@
 #include "Collider.hpp"
 #include "Config.hpp"
 
-PipePairsManager::PipePairsManager(SDL_Renderer* renderer, float distance) 
-	: distance(distance)
+PipePairsManager::PipePairsManager(SDL_Renderer* renderer) 
 {
 	for (size_t i = 0; i < SDL_arraysize(pipePairs); i++)
-		pipePairs[i] = new PipePair(renderer, WINDOW_WIDTH + i * distance);
+		pipePairs[i] = new PipePair(renderer, PIPE_PAIRS_START_X + i * PIPE_PAIRS_DISTANCE);
 }
 
 PipePairsManager::~PipePairsManager()
@@ -29,10 +28,10 @@ void PipePairsManager::Update()
 	{
 		pipePairs[i]->Update();
 
-		if (pipePairs[i]->lowerPipe.rect.x + pipePairs[i]->lowerPipe.rect.w < 0)
+		if (pipePairs[i]->lowerPipe.Right() < 0)
 		{
 			int prevIndex = (i - 1 + SDL_arraysize(pipePairs)) % SDL_arraysize(pipePairs);
-			float newX = pipePairs[prevIndex]->lowerPipe.rect.x + distance;
+			float newX = pipePairs[prevIndex]->lowerPipe.rect.x + PIPE_PAIRS_DISTANCE;
 
 			pipePairs[i]->SetRandomGapPosition();
 			pipePairs[i]->SetX(newX);
@@ -55,7 +54,7 @@ void PipePairsManager::Reset()
 {
 	for (size_t i = 0; i < SDL_arraysize(pipePairs); i++)
 	{
-		pipePairs[i]->SetX(WINDOW_WIDTH + i * distance);
+		pipePairs[i]->SetX(PIPE_PAIRS_START_X + i * PIPE_PAIRS_DISTANCE);
 		pipePairs[i]->SetRandomGapPosition();
 	}
 }

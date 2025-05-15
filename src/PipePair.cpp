@@ -4,7 +4,7 @@
 #include "Config.hpp"
 
 PipePair::PipePair(SDL_Renderer* renderer, float x)
-	: lowerPipe(renderer, x, 0, false), upperPipe(renderer, x, 0, true), gap(200)
+	: lowerPipe(renderer, x, 0, false), upperPipe(renderer, x, 0, true)
 {
 	SetRandomGapPosition();
 }
@@ -24,7 +24,7 @@ void PipePair::Update()
 void PipePair::SetRandomGapPosition()
 {
 	const float minY = 100.f;
-	const float maxY = GROUND_Y - gap - 100.f;
+	const float maxY = GROUND_Y - PIPE_PAIR_GAP - 100.f;
 
 	float newY = (float)SDL_rand((int)(maxY - minY + 1)) + minY;
 
@@ -39,6 +39,6 @@ void PipePair::SetX(float newX)
 
 void PipePair::SetY(float newY)
 {
-	lowerPipe.rect.y = newY + gap;
+	lowerPipe.rect.y = newY + PIPE_PAIR_GAP;
 	upperPipe.rect.y = newY - lowerPipe.rect.h;
 }

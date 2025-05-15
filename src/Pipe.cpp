@@ -4,7 +4,7 @@
 #include "Config.hpp"
 
 Pipe::Pipe(SDL_Renderer* renderer, float x, float y, bool flipped)
-	: GameObject(renderer, x, y, pipeGreenTextureFile), flipped(flipped) {}
+	: GameObject(renderer, x, y, pipeGreenTextureFile, false), flipped(flipped) {}
 
 void Pipe::RenderDraw(SDL_Renderer* renderer) const
 {
@@ -14,4 +14,4 @@ void Pipe::RenderDraw(SDL_Renderer* renderer) const
 		SDL_RenderTexture(renderer, texture, nullptr, &rect);
 }
 
-void Pipe::Update() { rect.x -= 5; }
+void Pipe::Update() { rect.x -= PIPE_MOVE_SPEED; }

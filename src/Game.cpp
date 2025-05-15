@@ -2,7 +2,6 @@
 #include <SDL3_image/SDL_image.h>
 
 #include "Game.hpp"
-#include "Collider.hpp"
 #include "Config.hpp"
 
 Game::Game()
@@ -18,16 +17,19 @@ Game::Game()
 	if (!SDL_SetWindowIcon(window, IMG_Load(iconTextureFile)))
 		SDL_Log("Error: SDL_SetWindowIcon - %s\n", SDL_GetError());
 
-	bird = new Bird(renderer, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-	background = new GameObject(renderer, 0, 0, backgroundNightTextureFile);
-	grass = new GameObject(renderer, 0, GROUND_Y, grassTextureFile);
-	pipePairsManager = new PipePairsManager(renderer, 350);
+	bird = new Bird(renderer, WINDOW_CENTER_X, WINDOW_CENTER_Y);
+	background = new GameObject(renderer, 0, 0, backgroundNightTextureFile, false);
+	ground = new Ground(renderer);
+	gameOverBanner = new GameObject(renderer, WINDOW_CENTER_X, 200, gameOverBannerTextureFile, true);
+	pipePairsManager = new PipePairsManager(renderer);
 }
 
 Game::~Game()
 {
 	delete bird;
 	delete background;
+	delete ground;
+	delete gameOverBanner;
 	delete pipePairsManager;
 
 	SDL_DestroyRenderer(renderer);
@@ -38,8 +40,11 @@ void Game::RenderDraw()
 {
 	background->RenderDraw(renderer);
 	pipePairsManager->RenderDraw(renderer);
-	grass->RenderDraw(renderer);
+	ground->RenderDraw(renderer);
 	bird->RenderDraw(renderer);
+
+	if (!bird->IsAlive())
+		gameOverBanner->RenderDraw(renderer);
 }
 
 void Game::Update()
@@ -48,6 +53,7 @@ void Game::Update()
 
 	if (bird->IsAlive())
 	{
+		ground->Update();
 		pipePairsManager->Update();
 		UpdateCollision();
 	}

@@ -4,21 +4,17 @@
 #include "Config.hpp"
 
 Bird::Bird(SDL_Renderer* renderer, float x, float y)
-	: AnimatedGameObject(renderer, x, y, birdYellowTextureFiles, 3, 150), velocity(0), gravity(2), alive(true)
-{
-	rect.x -= textures[currentTextureIndex]->w / 2;
-	rect.y -= textures[currentTextureIndex]->h / 2;
-}
-
+	: AnimatedGameObject(renderer, x, y, birdRedTextureFiles, 3, 100, true),
+	velocity(0), alive(true) {}
 
 void Bird::Update()
 {
 	if (IsAlive())
 		AnimatedGameObject::Update();
 
-	if (rect.y + textures[currentTextureIndex]->h + velocity < GROUND_Y)
+	if (Down() + velocity < GROUND_Y)
 	{
-		velocity += gravity;
+		velocity += GRAVITY;
 		rect.y += velocity;
 	}
 	else
@@ -31,7 +27,7 @@ void Bird::Update()
 void Bird::Flap()
 {
 	if (IsAlive())
-		velocity = -20;
+		velocity = -BIRD_FLAP_FORCE;
 }
 
 void Bird::Reset()
@@ -39,8 +35,8 @@ void Bird::Reset()
 	velocity = 0;
 	currentTextureIndex = 0;
 	lastTicks = 0;
-	rect.x = WINDOW_WIDTH / 2 - textures[currentTextureIndex]->w / 2;
-	rect.y = WINDOW_HEIGHT / 2 - textures[currentTextureIndex]->h / 2;
+	rect.x = WINDOW_CENTER_X - (float)textures[currentTextureIndex]->w / 2;
+	rect.y = WINDOW_CENTER_Y - (float)textures[currentTextureIndex]->h / 2;
 	alive = true;
 }
 
