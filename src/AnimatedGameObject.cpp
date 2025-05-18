@@ -23,8 +23,8 @@ AnimatedGameObject::AnimatedGameObject(SDL_Renderer* renderer,
 	}
 
 	if (isPosCenter)
-		rect = { x - (float)textures[currentTextureIndex]->w / 2,
-				y - (float)textures[currentTextureIndex]->h / 2,
+		rect = { x - textures[currentTextureIndex]->w / 2.0f,
+				y - textures[currentTextureIndex]->h / 2.0f,
 				(float)textures[currentTextureIndex]->w,
 				(float)textures[currentTextureIndex]->h };
 	else
@@ -38,7 +38,9 @@ AnimatedGameObject::~AnimatedGameObject()
 }
 
 void AnimatedGameObject::RenderDraw(SDL_Renderer* renderer) const
-{ SDL_RenderTexture(renderer, textures[currentTextureIndex], nullptr, &rect); }
+{
+	SDL_RenderTexture(renderer, textures[currentTextureIndex], nullptr, &rect);
+}
 
 void AnimatedGameObject::Update()
 {

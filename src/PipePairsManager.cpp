@@ -6,14 +6,9 @@
 
 PipePairsManager::PipePairsManager(SDL_Renderer* renderer) 
 {
-	for (size_t i = 0; i < SDL_arraysize(pipePairs); i++)
-		pipePairs[i] = new PipePair(renderer, PIPE_PAIRS_START_X + i * PIPE_PAIRS_DISTANCE);
-}
-
-PipePairsManager::~PipePairsManager()
-{
-	for (auto& pair : pipePairs)
-		delete pair;
+	pipePairs[0] = std::make_unique<PipePair>(renderer, PIPE_PAIRS_START_X);
+	for (int i = 1; i < PIPE_PAIRS_COUNT; i++)
+		pipePairs[i] = std::make_unique<PipePair>(renderer, pipePairs[i - 1]->Right() + PIPE_PAIRS_DISTANCE);
 }
 
 void PipePairsManager::RenderDraw(SDL_Renderer* renderer) const
@@ -24,14 +19,14 @@ void PipePairsManager::RenderDraw(SDL_Renderer* renderer) const
 
 void PipePairsManager::Update()
 {
-	for (size_t i = 0; i < SDL_arraysize(pipePairs); i++)
+	for (int i = 0; i < PIPE_PAIRS_COUNT; i++)
 	{
 		pipePairs[i]->Update();
 
-		if (pipePairs[i]->lowerPipe.Right() < 0)
+		if (pipePairs[i]->Right() < 0)
 		{
-			int prevIndex = (i - 1 + SDL_arraysize(pipePairs)) % SDL_arraysize(pipePairs);
-			float newX = pipePairs[prevIndex]->lowerPipe.rect.x + PIPE_PAIRS_DISTANCE;
+			int prevIndex = (i - 1 + PIPE_PAIRS_COUNT) % PIPE_PAIRS_COUNT;
+			float newX = pipePairs[prevIndex]->Right() + PIPE_PAIRS_DISTANCE;
 
 			pipePairs[i]->SetRandomGapPosition();
 			pipePairs[i]->SetX(newX);
@@ -43,8 +38,8 @@ bool PipePairsManager::CheckCollisionWithPipePairs(const SDL_FRect* rect) const
 {
 	for (const auto& pair : pipePairs)
 	{
-		if (Collider::CheckCollision(rect, &pair->lowerPipe.rect) ||
-			Collider::CheckCollision(rect, &pair->upperPipe.rect))
+		if (Collider::CheckCollision(rect, pair->LowerPipeRect()) ||
+			Collider::CheckCollision(rect, pair->UpperPipeRect()))
 			return true;
 	}
 	return false;
@@ -52,9 +47,11 @@ bool PipePairsManager::CheckCollisionWithPipePairs(const SDL_FRect* rect) const
 
 void PipePairsManager::Reset()
 {
-	for (size_t i = 0; i < SDL_arraysize(pipePairs); i++)
+	pipePairs[0]->SetX(PIPE_PAIRS_START_X);
+	pipePairs[0]->SetRandomGapPosition();
+	for (int i = 1; i < PIPE_PAIRS_COUNT; i++)
 	{
-		pipePairs[i]->SetX(PIPE_PAIRS_START_X + i * PIPE_PAIRS_DISTANCE);
+		pipePairs[i]->SetX(pipePairs[i - 1]->Right() + PIPE_PAIRS_DISTANCE);
 		pipePairs[i]->SetRandomGapPosition();
 	}
 }

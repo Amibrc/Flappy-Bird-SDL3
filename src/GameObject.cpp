@@ -14,10 +14,7 @@ GameObject::GameObject(SDL_Renderer* renderer, float x, float y, const char* fil
 	}
 	
 	if (isPosCenter)
-		rect = { x - (float)texture->w / 2,
-				y - (float)texture->h / 2,
-				(float)texture->w,
-				(float)texture->h };
+		rect = { x - texture->w / 2.0f, y - texture->h / 2.0f, (float)texture->w, (float)texture->h };
 	else
 		rect = { x, y, (float)texture->w, (float)texture->h };
 };
@@ -25,5 +22,6 @@ GameObject::GameObject(SDL_Renderer* renderer, float x, float y, const char* fil
 GameObject::~GameObject() { SDL_DestroyTexture(texture); }
 
 void GameObject::RenderDraw(SDL_Renderer* renderer) const
-{ SDL_RenderTexture(renderer, texture, nullptr, &rect); }
-
+{
+	SDL_RenderTexture(renderer, texture, nullptr, &rect);
+}

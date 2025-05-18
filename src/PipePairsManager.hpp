@@ -2,23 +2,24 @@
 
 #include <SDL3/SDL.h>
 
+#include <array>
+#include <memory>
+
 #include "PipePair.hpp"
+#include "Config.hpp"
 
 class PipePairsManager
 {
 public:
-	PipePair* pipePairs[3];
-
 	PipePairsManager(SDL_Renderer* renderer);
 
-	~PipePairsManager();
-
 	void RenderDraw(SDL_Renderer* renderer) const;
-
 	void Update();
+	void Reset();
 
 	bool CheckCollisionWithPipePairs(const SDL_FRect* rect) const;
 
-	void Reset();
+private:
+	std::array<std::unique_ptr<PipePair>, PIPE_PAIRS_COUNT> pipePairs;
 };
 

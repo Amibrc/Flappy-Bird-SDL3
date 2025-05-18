@@ -5,70 +5,92 @@
 #include "Config.hpp"
 
 Game::Game()
-{
-	SDL_srand(SDL_GetPerformanceCounter());
-
-	if (!SDL_Init(SDL_INIT_VIDEO))
-		SDL_Log("Error: SDL_Init - %s\n", SDL_GetError());
-
-	if (!SDL_CreateWindowAndRenderer("Flappy Bird", WINDOW_WIDTH, WINDOW_HEIGHT, 0, &window, &renderer))
-		SDL_Log("Error: SDL_CreateWindowAndRenderer - %s\n", SDL_GetError());
-
-	if (!SDL_SetWindowIcon(window, IMG_Load(iconTextureFile)))
-		SDL_Log("Error: SDL_SetWindowIcon - %s\n", SDL_GetError());
-
-	bird = new Bird(renderer, WINDOW_CENTER_X, WINDOW_CENTER_Y);
-	background = new GameObject(renderer, 0, 0, backgroundNightTextureFile, false);
-	ground = new Ground(renderer);
-	gameOverBanner = new GameObject(renderer, WINDOW_CENTER_X, 200, gameOverBannerTextureFile, true);
-	pipePairsManager = new PipePairsManager(renderer);
-}
-
-Game::~Game()
-{
-	delete bird;
-	delete background;
-	delete ground;
-	delete gameOverBanner;
-	delete pipePairsManager;
-
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-}
+	: state(GameState::startScreen),
+	bird(renderer), ground(renderer), pipePairsManager(renderer),
+	background(renderer, 0, 0, backgroundNightTextureFile, false),
+	gameOverBanner(renderer, WINDOW_CENTER_X, 200, gameOverBannerTextureFile, true),
+	getReadyBanner(renderer, WINDOW_CENTER_X, 200, getReadyBannerTextureFile, true) {}
 
 void Game::RenderDraw()
 {
-	background->RenderDraw(renderer);
-	pipePairsManager->RenderDraw(renderer);
-	ground->RenderDraw(renderer);
-	bird->RenderDraw(renderer);
+	background.RenderDraw(renderer);
+	
+	if (state != GameState::startScreen)
+		pipePairsManager.RenderDraw(renderer);
 
-	if (!bird->IsAlive())
-		gameOverBanner->RenderDraw(renderer);
+	ground.RenderDraw(renderer);
+	bird.RenderDraw(renderer);
+
+	RenderDrawUI();
+}
+
+void Game::RenderDrawUI()
+{
+	switch (state)
+	{
+	case (GameState::startScreen):
+		getReadyBanner.RenderDraw(renderer);
+		break;
+	case (GameState::gameOver):
+		gameOverBanner.RenderDraw(renderer);
+		break;
+	}
 }
 
 void Game::Update()
 {
-	bird->Update();
-
-	if (bird->IsAlive())
+	switch (state)
 	{
-		ground->Update();
-		pipePairsManager->Update();
-		UpdateCollision();
+	case (GameState::startScreen):
+		UpdateStartScreen();
+		break;
+	case (GameState::playing):
+		UpdatePlaying();
+		break;
+	case (GameState::gameOver):
+		UpdateGameOver();
+		break;
 	}
+}
+
+void Game::UpdateStartScreen()
+{
+	bird.IdleFly();
+	ground.Update();
+}
+
+void Game::UpdatePlaying()
+{
+	bird.Update();
+
+	if (!bird.IsAlive())
+	{
+		state = GameState::gameOver;
+		return;
+	}
+
+	ground.Update();
+	pipePairsManager.Update();
+	UpdateCollision();
+}
+
+void Game::UpdateGameOver()
+{
+	bird.Update();
 }
 
 void Game::UpdateCollision()
 {
-	if (pipePairsManager->CheckCollisionWithPipePairs(&bird->rect))
-		bird->Death();
+	if (pipePairsManager.CheckCollisionWithPipePairs(bird.Rect()))
+		bird.Death();
 }
 
 void Game::Iter()
 {
 	Update();
 	RenderDraw();
+	SDL_RenderPresent(renderer);
+	SDL_Delay(DELAY_MS);
 }
 
 void Game::EventHandler(SDL_Event* event)
@@ -76,23 +98,41 @@ void Game::EventHandler(SDL_Event* event)
 	switch (event->type)
 	{
 	case SDL_EVENT_MOUSE_BUTTON_DOWN:
-		if (bird->IsAlive())
-			bird->Flap();
-		else
+		if (state == GameState::playing)
+			bird.Flap();
+		else if (state == GameState::gameOver)
 			Restart();
+		else
+			StartPlaying();
 		break;
 	case SDL_EVENT_KEY_DOWN:
-		if (event->key.scancode == SDL_SCANCODE_SPACE)
-			if (bird->IsAlive())
-				bird->Flap();
-			else
+		switch (event->key.scancode)
+		{
+		case (SDL_SCANCODE_SPACE):
+			if (state == GameState::playing)
+				bird.Flap();
+			else if (state == GameState::gameOver)
 				Restart();
+			else
+				StartPlaying();
+			break;
+		case (SDL_SCANCODE_ESCAPE):
+			state = GameState::startScreen;
+			break;
+		}
 		break;
 	}
 }
 
+void Game::StartPlaying()
+{
+	state = GameState::playing;
+	bird.Flap();
+}
+
 void Game::Restart()
 {
-	pipePairsManager->Reset();
-	bird->Reset();
+	pipePairsManager.Reset();
+	bird.Reset();
+	StartPlaying();
 }

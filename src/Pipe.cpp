@@ -13,5 +13,3 @@ void Pipe::RenderDraw(SDL_Renderer* renderer) const
 	else
 		SDL_RenderTexture(renderer, texture, nullptr, &rect);
 }
-
-void Pipe::Update() { rect.x -= PIPE_MOVE_SPEED; }

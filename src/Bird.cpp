@@ -3,9 +3,9 @@
 #include "Bird.hpp"
 #include "Config.hpp"
 
-Bird::Bird(SDL_Renderer* renderer, float x, float y)
-	: AnimatedGameObject(renderer, x, y, birdRedTextureFiles, 3, 100, true),
-	velocity(0), alive(true) {}
+Bird::Bird(SDL_Renderer* renderer)
+	: AnimatedGameObject(renderer, WINDOW_CENTER_X, WINDOW_CENTER_Y, birdRedTextureFiles, 3, 100, true),
+	idleFlyCounter(0), velocity(0), alive(true) {}
 
 void Bird::Update()
 {
@@ -15,12 +15,12 @@ void Bird::Update()
 	if (Down() + velocity < GROUND_Y)
 	{
 		velocity += GRAVITY;
-		rect.y += velocity;
+		MoveY(velocity);
 	}
 	else
 	{
 		Death();
-		rect.y = (float)GROUND_Y - textures[currentTextureIndex]->h;
+		SetY((float)GROUND_Y - Height());
 	}
 }
 
@@ -35,9 +35,14 @@ void Bird::Reset()
 	velocity = 0;
 	currentTextureIndex = 0;
 	lastTicks = 0;
-	rect.x = WINDOW_CENTER_X - (float)textures[currentTextureIndex]->w / 2;
-	rect.y = WINDOW_CENTER_Y - (float)textures[currentTextureIndex]->h / 2;
 	alive = true;
+	SetCenterY(WINDOW_CENTER_Y);
 }
 
-void Bird::Death() { alive = false; }
+void Bird::IdleFly()
+{
+	AnimatedGameObject::Update();
+	idleFlyCounter += 0.1f;
+	SetY(WINDOW_CENTER_Y + (float)sin(idleFlyCounter) * 8.0f);
+}
+

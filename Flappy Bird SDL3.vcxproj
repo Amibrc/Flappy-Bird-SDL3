@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\GameBase.cpp" />
     <ClCompile Include="src\Ground.cpp" />
     <ClCompile Include="src\AnimatedGameObject.cpp" />
     <ClCompile Include="src\Bird.cpp" />
@@ -30,6 +31,7 @@
     <ClCompile Include="src\PipePairsManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\GameBase.hpp" />
     <ClInclude Include="src\Ground.hpp" />
     <ClInclude Include="src\AnimatedGameObject.hpp" />
     <ClInclude Include="src\Bird.hpp" />

@@ -23,22 +23,18 @@ void PipePair::Update()
 
 void PipePair::SetRandomGapPosition()
 {
-	const float minY = 100.f;
-	const float maxY = GROUND_Y - PIPE_PAIR_GAP - 100.f;
-
-	float newY = (float)SDL_rand((int)(maxY - minY + 1)) + minY;
-
+	float newY = (float)SDL_rand((int)(PIPE_MAX_Y - PIPE_MIN_Y + 1)) + PIPE_MIN_Y;
 	SetY(newY);
 }
 
-void PipePair::SetX(float newX) 
+void PipePair::SetX(float newX)
 {
-	lowerPipe.rect.x = newX;
-	upperPipe.rect.x = newX;
+	lowerPipe.SetX(newX);
+	upperPipe.SetX(newX);
 }
 
 void PipePair::SetY(float newY)
 {
-	lowerPipe.rect.y = newY + PIPE_PAIR_GAP;
-	upperPipe.rect.y = newY - lowerPipe.rect.h;
+	lowerPipe.SetY(newY + PIPE_PAIR_GAP);
+	upperPipe.SetY(newY - lowerPipe.Height());
 }

@@ -7,18 +7,22 @@
 class PipePair
 {
 public:
-    Pipe lowerPipe;
-    Pipe upperPipe;
-
     PipePair(SDL_Renderer* renderer, float x);
 
-    void RenderDraw(SDL_Renderer* renderer) const;
+    inline const SDL_FRect* LowerPipeRect() const { return lowerPipe.Rect(); }
+    inline const SDL_FRect* UpperPipeRect() const { return upperPipe.Rect(); }
 
-    void Update();
+    inline float Left() const { return lowerPipe.Left(); }
+    inline float Right() const { return lowerPipe.Right(); }
 
     void SetX(float newX);
-
     void SetY(float newY);
-
     void SetRandomGapPosition();
+
+    void RenderDraw(SDL_Renderer* renderer) const;
+    void Update();
+
+private:
+    Pipe lowerPipe;
+    Pipe upperPipe;
 };

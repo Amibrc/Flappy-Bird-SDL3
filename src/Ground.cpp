@@ -6,14 +6,14 @@
 
 Ground::Ground(SDL_Renderer* renderer)
 {
-	groundPieces[0] = new GameObject(renderer, 0, GROUND_Y, grassTextureFile, false);
-	groundPieces[1] = new GameObject(renderer, groundPieces[0]->Right(), GROUND_Y, grassTextureFile, false);
-}
+	auto first = std::make_unique<GameObject>(renderer, 0, GROUND_Y, grassTextureFile, false);
+	int count = (int)WINDOW_WIDTH / first->Width() + 2;
 
-Ground::~Ground()
-{
-	delete groundPieces[0];
-	delete groundPieces[1];
+	groundPieces.reserve(count);
+	groundPieces.push_back(std::move(first));
+
+	for (int i = 1; i < count; i++)
+		groundPieces.push_back(std::make_unique<GameObject>(renderer, groundPieces[i - 1]->Right(), GROUND_Y, grassTextureFile, false));
 }
 
 void Ground::RenderDraw(SDL_Renderer* renderer)
@@ -25,13 +25,14 @@ void Ground::RenderDraw(SDL_Renderer* renderer)
 void Ground::Update()
 {
 	for (auto& piece : groundPieces)
-	{
-		piece->rect.x -= GROUND_MOVE_SPEED;
+		piece->MoveX(-GROUND_MOVE_SPEED);
 
+	GameObject* mostRigt = groundPieces[0].get();
+	for (auto& piece : groundPieces)
+		if (piece->Right() > mostRigt->Right())
+			mostRigt = piece.get();
+
+	for (auto& piece : groundPieces)
 		if (piece->Right() < 0)
-		{
-			GameObject* other = (piece == groundPieces[0]) ? groundPieces[1] : groundPieces[0];
-			piece->rect.x = other->Right() - GROUND_MOVE_SPEED;
-		}
-	}
+			piece->SetX(mostRigt->Right());
 }
