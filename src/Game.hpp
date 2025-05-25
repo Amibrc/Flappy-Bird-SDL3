@@ -13,6 +13,7 @@ class Game : GameBase
 {
 public:
 	Game();
+	~Game() = default;
 
 	void Iter();
 	void EventHandler(SDL_Event* event);
@@ -20,9 +21,9 @@ public:
 private:
 	enum class GameState
 	{
-		startScreen,
-		playing,
-		gameOver
+		StartScreen,
+		Playing,
+		GameOver
 	};
 
 	GameState state;
@@ -33,6 +34,7 @@ private:
 	GameObject background;
 	GameObject gameOverBanner;
 	GameObject getReadyBanner;
+	GameObject startBanner;
 
 	void RenderDraw();
 	void RenderDrawUI();
@@ -45,4 +47,5 @@ private:
 
 	void StartPlaying();
 	void Restart();
+	void Reset();
 };

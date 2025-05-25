@@ -9,13 +9,23 @@ GameBase::GameBase()
 	SDL_srand(SDL_GetPerformanceCounter());
 
 	if (!SDL_Init(SDL_INIT_VIDEO))
-		SDL_Log("Error: SDL_Init - %s\n", SDL_GetError());
+		SDL_Log("Error to init SDL [%s]", SDL_GetError());
+	
+	window = SDL_CreateWindow("Flappy Bird", WINDOW_WIDTH, WINDOW_HEIGHT, NULL);
+	if (!window)
+		SDL_Log("Error to create window [%s]", SDL_GetError());
 
-	if (!SDL_CreateWindowAndRenderer("Flappy Bird", WINDOW_WIDTH, WINDOW_HEIGHT, 0, &window, &renderer))
-		SDL_Log("Error: SDL_CreateWindowAndRenderer - %s\n", SDL_GetError());
+	renderer = SDL_CreateRenderer(window, NULL);
+	if (!renderer)
+		SDL_Log("Error to create renderer [%s]", SDL_GetError());
 
-	if (!SDL_SetWindowIcon(window, IMG_Load(iconTextureFile)))
-		SDL_Log("Error: SDL_SetWindowIcon - %s\n", SDL_GetError());
+	SDL_Surface* iconSurface = IMG_Load(iconTextureFile);
+	if (!iconSurface)
+		SDL_Log("Failed to load icon [%s]", SDL_GetError());
+	else if (!SDL_SetWindowIcon(window, iconSurface))
+		SDL_Log("Error setting icon [%s]", SDL_GetError());
+
+	SDL_DestroySurface(iconSurface);
 }
 
 GameBase::~GameBase()

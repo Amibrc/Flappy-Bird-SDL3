@@ -37,7 +37,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 
 void SDL_AppQuit(void* appstate, SDL_AppResult result)
 {
-	Game* state = (Game*)appstate;
-	delete state;
+	Game* game = (Game*)appstate;
+	delete game;
 	SDL_Quit();
 }

@@ -8,7 +8,7 @@ GameObject::GameObject(SDL_Renderer* renderer, float x, float y, const char* fil
 {
 	if (!texture)
 	{
-		SDL_Log("Error: IMG_LoadTexture - %s", SDL_GetError());
+		SDL_Log("Failed to load texture [%s]", SDL_GetError());
 		rect = { x, y, 0, 0 };
 		return;
 	}

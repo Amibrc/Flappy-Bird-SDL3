@@ -16,7 +16,7 @@ AnimatedGameObject::AnimatedGameObject(SDL_Renderer* renderer,
 		textures.push_back(IMG_LoadTexture(renderer, files[i]));
 		if (!textures[i])
 		{
-			SDL_Log("Error: IMG_LoadTexture - %s", SDL_GetError());
+			SDL_Log("Failed to load texture [%s]", SDL_GetError());
 			rect = { x, y, 0, 0 };
 			return;
 		}

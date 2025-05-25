@@ -12,6 +12,7 @@ class PipePairsManager
 {
 public:
 	PipePairsManager(SDL_Renderer* renderer);
+	~PipePairsManager() = default;
 
 	void RenderDraw(SDL_Renderer* renderer) const;
 	void Update();
