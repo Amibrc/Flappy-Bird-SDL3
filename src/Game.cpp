@@ -1,8 +1,8 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 
-#include "Game.hpp"
-#include "Config.hpp"
+#include "Game.h"
+#include "Config.h"
 
 Game::Game()
 	: state(GameState::StartScreen),

@@ -3,11 +3,11 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 
-#include "GameBase.hpp"
-#include "GameObject.hpp"
-#include "Bird.hpp"
-#include "PipePairsManager.hpp"
-#include "Ground.hpp"
+#include "GameBase.h"
+#include "GameObject.h"
+#include "Bird.h"
+#include "PipePairsManager.h"
+#include "Ground.h"
 
 class Game : GameBase
 {

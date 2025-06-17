@@ -1,8 +1,8 @@
 #include <SDL3/SDL.h>
 
-#include "PipePairsManager.hpp"
-#include "Collider.hpp"
-#include "Config.hpp"
+#include "PipePairsManager.h"
+#include "Collider.h"
+#include "Config.h"
 
 PipePairsManager::PipePairsManager(SDL_Renderer* renderer) 
 {

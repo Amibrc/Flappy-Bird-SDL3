@@ -5,8 +5,8 @@
 #include <array>
 #include <memory>
 
-#include "PipePair.hpp"
-#include "Config.hpp"
+#include "PipePair.h"
+#include "Config.h"
 
 class PipePairsManager
 {

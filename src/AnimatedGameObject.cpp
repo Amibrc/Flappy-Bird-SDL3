@@ -1,7 +1,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 
-#include "AnimatedGameObject.hpp"
+#include "AnimatedGameObject.h"
 
 AnimatedGameObject::AnimatedGameObject(SDL_Renderer* renderer,
 										float x, float y,

@@ -1,8 +1,8 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 
-#include "Ground.hpp"
-#include "Config.hpp"
+#include "Ground.h"
+#include "Config.h"
 
 Ground::Ground(SDL_Renderer* renderer)
 {

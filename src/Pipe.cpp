@@ -1,7 +1,7 @@
 #include <SDL3/SDL.h>
 
-#include "Pipe.hpp"
-#include "Config.hpp"
+#include "Pipe.h"
+#include "Config.h"
 
 Pipe::Pipe(SDL_Renderer* renderer, float x, float y, bool flipped)
 	: GameObject(renderer, x, y, pipeGreenTextureFile, false), flipped(flipped) {}

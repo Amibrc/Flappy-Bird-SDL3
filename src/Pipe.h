@@ -2,8 +2,8 @@
 
 #include <SDL3/SDL.h>
 
-#include "GameObject.hpp"
-#include "Config.hpp"
+#include "GameObject.h"
+#include "Config.h"
 
 class Pipe : public GameObject
 {

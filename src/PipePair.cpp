@@ -1,7 +1,7 @@
 #include <SDL3/SDL.h>
 
-#include "PipePair.hpp"
-#include "Config.hpp"
+#include "PipePair.h"
+#include "Config.h"
 
 PipePair::PipePair(SDL_Renderer* renderer, float x)
 	: lowerPipe(renderer, x, 0, false), upperPipe(renderer, x, 0, true)

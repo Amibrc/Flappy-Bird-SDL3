@@ -5,7 +5,7 @@
 #include <vector>
 #include <memory>
 
-#include "GameObject.hpp"
+#include "GameObject.h"
 
 class Ground
 {

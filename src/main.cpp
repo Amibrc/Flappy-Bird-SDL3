@@ -4,7 +4,7 @@
 #include <SDL3/SDL_main.h>
 #include <SDL3_image/SDL_image.h>
 
-#include "Game.hpp"
+#include "Game.h"
 
 
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])

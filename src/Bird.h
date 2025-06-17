@@ -2,8 +2,8 @@
 
 #include <SDL3/SDL.h>
 
-#include "AnimatedGameObject.hpp"
-#include "Config.hpp"
+#include "AnimatedGameObject.h"
+#include "Config.h"
 
 class Bird : public AnimatedGameObject
 {

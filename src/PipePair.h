@@ -2,7 +2,7 @@
 
 #include <SDL3/SDL.h>
 
-#include "Pipe.hpp"
+#include "Pipe.h"
 
 class PipePair
 {

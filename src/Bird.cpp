@@ -1,7 +1,7 @@
 #include <SDL3/SDL.h>
 
-#include "Bird.hpp"
-#include "Config.hpp"
+#include "Bird.h"
+#include "Config.h"
 
 Bird::Bird(SDL_Renderer* renderer)
 	: AnimatedGameObject(renderer, WINDOW_CENTER_X, WINDOW_CENTER_Y, birdRedTextureFiles, 3, 100, true),

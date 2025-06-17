@@ -1,8 +1,8 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 
-#include "GameBase.hpp"
-#include "Config.hpp"
+#include "GameBase.h"
+#include "Config.h"
 
 GameBase::GameBase()
 {

@@ -31,17 +31,17 @@
     <ClCompile Include="src\PipePairsManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\GameBase.hpp" />
-    <ClInclude Include="src\Ground.hpp" />
-    <ClInclude Include="src\AnimatedGameObject.hpp" />
-    <ClInclude Include="src\Bird.hpp" />
-    <ClInclude Include="src\Collider.hpp" />
-    <ClInclude Include="src\Config.hpp" />
-    <ClInclude Include="src\Game.hpp" />
-    <ClInclude Include="src\GameObject.hpp" />
-    <ClInclude Include="src\Pipe.hpp" />
-    <ClInclude Include="src\PipePair.hpp" />
-    <ClInclude Include="src\PipePairsManager.hpp" />
+    <ClInclude Include="src\GameBase.h" />
+    <ClInclude Include="src\Ground.h" />
+    <ClInclude Include="src\AnimatedGameObject.h" />
+    <ClInclude Include="src\Bird.h" />
+    <ClInclude Include="src\Collider.h" />
+    <ClInclude Include="src\Config.h" />
+    <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\GameObject.h" />
+    <ClInclude Include="src\Pipe.h" />
+    <ClInclude Include="src\PipePair.h" />
+    <ClInclude Include="src\PipePairsManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitattributes" />
