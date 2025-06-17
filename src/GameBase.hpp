@@ -4,7 +4,7 @@ class GameBase
 {
 public:
 	GameBase();
-	~GameBase();
+	virtual ~GameBase();
 
 protected:
 	SDL_Window* window;

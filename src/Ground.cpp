@@ -7,6 +7,9 @@
 Ground::Ground(SDL_Renderer* renderer)
 {
 	auto first = std::make_unique<GameObject>(renderer, 0, GROUND_Y, grassTextureFile, false);
+
+	if (!first->HasTexture()) return;
+
 	int count = (int)WINDOW_WIDTH / first->Width() + 2;
 
 	groundPieces.reserve(count);
@@ -24,15 +27,13 @@ void Ground::RenderDraw(SDL_Renderer* renderer)
 
 void Ground::Update()
 {
+	if (groundPieces.empty()) return;
+
+	float total_len = groundPieces.size() * groundPieces.front()->Width();
 	for (auto& piece : groundPieces)
+	{
 		piece->MoveX(-GROUND_MOVE_SPEED);
-
-	GameObject* mostRigt = groundPieces[0].get();
-	for (auto& piece : groundPieces)
-		if (piece->Right() > mostRigt->Right())
-			mostRigt = piece.get();
-
-	for (auto& piece : groundPieces)
 		if (piece->Right() < 0)
-			piece->SetX(mostRigt->Right());
+			piece->MoveX(total_len);
+	}
 }

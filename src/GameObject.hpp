@@ -1,15 +1,15 @@
 #pragma once
 
 #include <SDL3/SDL.h>
-#include <SDL3_image/SDL_image.h>
 
 class GameObject
 {
 public:
-	GameObject(SDL_Renderer* renderer, float x, float y, const char* file, bool isPosCenter);
+	GameObject(SDL_Renderer* renderer, float x, float y, const char* const file, bool isPosCenter);
 	virtual ~GameObject();
 
 	inline const SDL_FRect* Rect() const { return &rect; }
+	inline bool HasTexture() const { return texture != nullptr; }
 
 	inline float Width() const { return rect.w; }
 	inline float Height() const { return rect.h; }

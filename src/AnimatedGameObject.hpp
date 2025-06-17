@@ -36,6 +36,8 @@ public:
 	virtual void RenderDraw(SDL_Renderer* renderer) const;
 	virtual void Update();
 
+	bool HasTextures() const;
+
 protected:
 	SDL_FRect rect;
 	std::vector<SDL_Texture*> textures;

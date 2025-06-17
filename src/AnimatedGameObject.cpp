@@ -10,25 +10,28 @@ AnimatedGameObject::AnimatedGameObject(SDL_Renderer* renderer,
 										bool isPosCenter)
 	: currentTextureIndex(0), lastTicks(0), frameDuration(frameDuration)
 {
+	int validTextureIndex = -1;
+
 	textures.reserve(count);
 	for (size_t i = 0; i < count; i++)
 	{
 		textures.push_back(IMG_LoadTexture(renderer, files[i]));
 		if (!textures[i])
-		{
 			SDL_Log("Failed to load texture [%s]", SDL_GetError());
-			rect = { x, y, 0, 0 };
-			return;
-		}
+		else
+			validTextureIndex = i;
 	}
 
-	if (isPosCenter)
-		rect = { x - textures[currentTextureIndex]->w / 2.0f,
-				y - textures[currentTextureIndex]->h / 2.0f,
-				(float)textures[currentTextureIndex]->w,
-				(float)textures[currentTextureIndex]->h };
+	if (validTextureIndex > -1)
+		if (isPosCenter)
+			rect = { x - textures[validTextureIndex]->w / 2.0f,
+					y - textures[validTextureIndex]->h / 2.0f,
+					(float)textures[validTextureIndex]->w,
+					(float)textures[validTextureIndex]->h };
+		else
+			rect = { x, y, (float)textures[validTextureIndex]->w, (float)textures[validTextureIndex]->h };
 	else
-		rect = { x, y, (float)textures[currentTextureIndex]->w, (float)textures[currentTextureIndex]->h };
+		rect = { x, y, 0, 0 };
 }
 
 AnimatedGameObject::~AnimatedGameObject()
@@ -50,4 +53,12 @@ void AnimatedGameObject::Update()
 		++currentTextureIndex %= textures.size();
 		lastTicks = nowTicks;
 	}
+}
+
+bool AnimatedGameObject::HasTextures() const
+{
+	for (const auto& texture : textures)
+		if (texture == nullptr)
+			return false;
+	return true;
 }
