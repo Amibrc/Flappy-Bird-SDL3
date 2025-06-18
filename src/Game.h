@@ -5,9 +5,9 @@
 
 #include "GameBase.h"
 #include "GameObject.h"
+#include "ScrollingLayer.h"
 #include "Bird.h"
 #include "PipePairsManager.h"
-#include "Ground.h"
 
 class Game : GameBase
 {
@@ -26,15 +26,16 @@ private:
 		GameOver
 	};
 
-	GameState state;
-	Bird bird;
-	Ground ground;
-	PipePairsManager pipePairsManager;
-
-	GameObject background;
 	GameObject gameOverBanner;
 	GameObject getReadyBanner;
 	GameObject startBanner;
+
+	ScrollingLayer background;
+	ScrollingLayer ground;
+
+	Bird bird;
+	GameState state;
+	PipePairsManager pipePairsManager;
 
 	void RenderDraw();
 	void RenderDrawUI();

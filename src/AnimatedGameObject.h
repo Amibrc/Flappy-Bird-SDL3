@@ -10,9 +10,11 @@ public:
 	AnimatedGameObject(SDL_Renderer* renderer,
 						float x, float y,
 						const char* const files[], size_t count,
-						Uint64 frameDuration,
-						bool isPosCenter);
+						Uint64 frameDuration, bool isPosCenter);
 	virtual ~AnimatedGameObject();
+
+	AnimatedGameObject(const AnimatedGameObject&) = delete;
+	AnimatedGameObject& operator=(const AnimatedGameObject&) = delete;
 
 	inline const SDL_FRect* Rect() const { return &rect; }
 

@@ -39,10 +39,10 @@
     <ClCompile Include="src\PipePairsManager.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\Ground.cpp">
+    <ClCompile Include="src\GameBase.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameBase.cpp">
+    <ClCompile Include="src\ScrollingLayer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,10 +74,10 @@
     <ClInclude Include="src\AnimatedGameObject.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ground.h">
+    <ClInclude Include="src\GameBase.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameBase.h">
+    <ClInclude Include="src\ScrollingLayer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

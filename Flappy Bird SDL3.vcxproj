@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ScrollingLayer.cpp" />
     <ClCompile Include="src\GameBase.cpp" />
-    <ClCompile Include="src\Ground.cpp" />
     <ClCompile Include="src\AnimatedGameObject.cpp" />
     <ClCompile Include="src\Bird.cpp" />
     <ClCompile Include="src\Game.cpp" />
@@ -31,8 +31,8 @@
     <ClCompile Include="src\PipePairsManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ScrollingLayer.h" />
     <ClInclude Include="src\GameBase.h" />
-    <ClInclude Include="src\Ground.h" />
     <ClInclude Include="src\AnimatedGameObject.h" />
     <ClInclude Include="src\Bird.h" />
     <ClInclude Include="src\Collider.h" />

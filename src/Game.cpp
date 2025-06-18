@@ -6,8 +6,9 @@
 
 Game::Game()
 	: state(GameState::StartScreen),
-	bird(renderer), ground(renderer), pipePairsManager(renderer),
-	background(renderer, 0, 0, backgroundNightTextureFile, false),
+	bird(renderer), pipePairsManager(renderer),
+	background(renderer, 0, 0, backgroundNightTextureFile, false, BACKGROUND_MOVE_SPEED),
+	ground(renderer, 0, GROUND_Y, groundTextureFile, false, GROUND_MOVE_SPEED),
 	gameOverBanner(renderer, WINDOW_CENTER_X, 200, gameOverBannerTextureFile, true),
 	getReadyBanner(renderer, WINDOW_CENTER_X, 200, getReadyBannerTextureFile, true),
 	startBanner(renderer, WINDOW_CENTER_X, 520, startBannerTextureFile, true) {}
@@ -23,6 +24,8 @@ void Game::RenderDraw()
 	bird.RenderDraw(renderer);
 
 	RenderDrawUI();
+
+	SDL_RenderPresent(renderer);
 }
 
 void Game::RenderDrawUI()
@@ -58,6 +61,7 @@ void Game::Update()
 void Game::UpdateStartScreen()
 {
 	bird.IdleFly();
+	background.Update();
 	ground.Update();
 }
 
@@ -71,6 +75,7 @@ void Game::UpdatePlaying()
 		return;
 	}
 
+	background.Update();
 	ground.Update();
 	pipePairsManager.Update();
 	UpdateCollision();
@@ -91,7 +96,6 @@ void Game::Iter()
 {
 	Update();
 	RenderDraw();
-	SDL_RenderPresent(renderer);
 	SDL_Delay(DELAY_MS);
 }
 

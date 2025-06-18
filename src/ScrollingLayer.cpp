@@ -1,0 +1,41 @@
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
+
+#include "ScrollingLayer.h"
+#include "Config.h"
+
+ScrollingLayer::ScrollingLayer(SDL_Renderer* renderer,
+								float x, float y,
+								const char* const file, bool isPosCenter,
+								float speed) : speed(speed)
+{
+	auto first = std::make_unique<GameObject>(renderer, x, y, file, isPosCenter);
+
+	if (!first->HasTexture()) return;
+
+	int count = (int)WINDOW_WIDTH / first->Width() + 2;
+
+	layerPieces.reserve(count);
+	layerPieces.push_back(std::move(first));
+
+	for (int i = 1; i < count; i++)
+		layerPieces.push_back(std::make_unique<GameObject>(renderer, layerPieces[i - 1]->Right(), y, file, isPosCenter));
+}
+
+void ScrollingLayer::RenderDraw(SDL_Renderer* renderer)
+{
+	for (const auto& piece : layerPieces)
+		piece->RenderDraw(renderer);
+}
+
+void ScrollingLayer::Update()
+{
+	if (layerPieces.empty()) return;
+
+	for (auto& piece : layerPieces)
+	{
+		piece->MoveX(-speed);
+		if (piece->Right() < 0)
+			piece->MoveX(layerPieces.size() * layerPieces.front()->Width());
+	}
+}

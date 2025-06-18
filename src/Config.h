@@ -13,6 +13,7 @@ constexpr float GRAVITY = 1.0f;
 
 constexpr float GROUND_Y = WINDOW_HEIGHT - WINDOW_HEIGHT / 10.0f;
 constexpr float GROUND_MOVE_SPEED = 5.0f;
+constexpr float BACKGROUND_MOVE_SPEED = 0.5f;
 
 constexpr float PIPE_MOVE_SPEED = 5.0f;
 constexpr float PIPE_PAIR_GAP = 200.0f;
@@ -39,7 +40,7 @@ constexpr const char* backgroundNightTextureFile = "assets/backgroundNight.png";
 constexpr const char* pipeGreenTextureFile = "assets/pipeGreen.png";
 constexpr const char* pipeBrownTextureFile = "assets/pipeBrown.png";
 
-constexpr const char* grassTextureFile = "assets/grass.png";
+constexpr const char* groundTextureFile = "assets/ground.png";
 
 constexpr const char* birdYellowTextureFiles[] =
 {

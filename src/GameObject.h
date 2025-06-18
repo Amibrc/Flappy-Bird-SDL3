@@ -8,6 +8,9 @@ public:
 	GameObject(SDL_Renderer* renderer, float x, float y, const char* const file, bool isPosCenter);
 	virtual ~GameObject();
 
+	GameObject(const GameObject&) = delete;
+	GameObject& operator=(const GameObject&) = delete;
+
 	inline const SDL_FRect* Rect() const { return &rect; }
 	inline bool HasTexture() const { return texture != nullptr; }
 

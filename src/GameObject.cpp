@@ -3,7 +3,7 @@
 
 #include "GameObject.h"
 
-GameObject::GameObject(SDL_Renderer* renderer, float x, float y, const char* file, bool isPosCenter)
+GameObject::GameObject(SDL_Renderer* renderer, float x, float y, const char* const file, bool isPosCenter)
 	: texture(IMG_LoadTexture(renderer, file))
 {
 	if (!texture)
