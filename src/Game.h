@@ -3,13 +3,15 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 
-#include "GameBase.h"
+#include "SDL_Base.h"
 #include "GameObject.h"
 #include "ScrollingLayer.h"
 #include "Bird.h"
 #include "PipePairsManager.h"
+#include "Score.h"
+#include "Stats.h"
 
-class Game : GameBase
+class Game : SDL_Base
 {
 public:
 	Game();
@@ -36,6 +38,8 @@ private:
 	Bird bird;
 	GameState state;
 	PipePairsManager pipePairsManager;
+	Score score;
+	Stats stats;
 
 	void RenderDraw();
 	void RenderDrawUI();

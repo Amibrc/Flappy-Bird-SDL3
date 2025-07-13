@@ -39,5 +39,4 @@ void SDL_AppQuit(void* appstate, SDL_AppResult result)
 {
 	Game* game = (Game*)appstate;
 	delete game;
-	SDL_Quit();
 }

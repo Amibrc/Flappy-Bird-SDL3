@@ -4,12 +4,10 @@
 #include "ScrollingLayer.h"
 #include "Config.h"
 
-ScrollingLayer::ScrollingLayer(SDL_Renderer* renderer,
-								float x, float y,
-								const char* const file, bool isPosCenter,
-								float speed) : speed(speed)
+ScrollingLayer::ScrollingLayer(SDL_Renderer* renderer, float y, const char* const file, float speed)
+	: speed(speed)
 {
-	auto first = std::make_unique<GameObject>(renderer, x, y, file, isPosCenter);
+	auto first = std::make_unique<GameObject>(renderer, 0, y, file, false);
 
 	if (!first->HasTexture()) return;
 
@@ -18,11 +16,11 @@ ScrollingLayer::ScrollingLayer(SDL_Renderer* renderer,
 	layerPieces.reserve(count);
 	layerPieces.push_back(std::move(first));
 
-	for (int i = 1; i < count; i++)
-		layerPieces.push_back(std::make_unique<GameObject>(renderer, layerPieces[i - 1]->Right(), y, file, isPosCenter));
+	for (int i = 1; i < count; ++i)
+		layerPieces.push_back(std::make_unique<GameObject>(renderer, layerPieces[i - 1]->Right(), y, file, false));
 }
 
-void ScrollingLayer::RenderDraw(SDL_Renderer* renderer)
+void ScrollingLayer::RenderDraw(SDL_Renderer* renderer) const
 {
 	for (const auto& piece : layerPieces)
 		piece->RenderDraw(renderer);

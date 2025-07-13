@@ -1,10 +1,10 @@
 #pragma once
 
-class GameBase
+class SDL_Base
 {
 public:
-	GameBase();
-	virtual ~GameBase();
+	SDL_Base();
+	virtual ~SDL_Base();
 
 protected:
 	SDL_Window* window;

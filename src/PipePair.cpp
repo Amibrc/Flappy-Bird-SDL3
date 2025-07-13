@@ -4,7 +4,7 @@
 #include "Config.h"
 
 PipePair::PipePair(SDL_Renderer* renderer, float x)
-	: lowerPipe(renderer, x, 0, false), upperPipe(renderer, x, 0, true)
+	: lowerPipe(renderer, x, 0, false), upperPipe(renderer, x, 0, true), isPassedBy(false)
 {
 	SetRandomGapPosition();
 }

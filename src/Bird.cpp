@@ -4,7 +4,7 @@
 #include "Config.h"
 
 Bird::Bird(SDL_Renderer* renderer)
-	: AnimatedGameObject(renderer, WINDOW_CENTER_X, WINDOW_CENTER_Y, birdRedTextureFiles, 3, 100, true),
+	: AnimatedGameObject(renderer, WINDOW_CENTER_X, WINDOW_CENTER_Y, birdRedFiles, 3, 100, true),
 	idleFlyCounter(0), velocity(0), angle(0), alive(true) {}
 
 void Bird::RenderDraw(SDL_Renderer* renderer) const

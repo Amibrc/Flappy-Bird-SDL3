@@ -16,14 +16,20 @@ public:
     inline float Left() const { return lowerPipe.Left(); }
     inline float Right() const { return lowerPipe.Right(); }
 
+    inline void Reset() { isPassedBy = false; }
+    inline void Passed() { isPassedBy = true; }
+    inline bool IsPassedBy() const { return isPassedBy; }
+
     void SetX(float newX);
     void SetY(float newY);
     void SetRandomGapPosition();
 
     void RenderDraw(SDL_Renderer* renderer) const;
     void Update();
-
+    
 private:
+    bool isPassedBy;
+
     Pipe lowerPipe;
     Pipe upperPipe;
 };

@@ -7,18 +7,22 @@
 Game::Game()
 	: state(GameState::StartScreen),
 	bird(renderer), pipePairsManager(renderer),
-	background(renderer, 0, 0, backgroundNightTextureFile, false, BACKGROUND_MOVE_SPEED),
-	ground(renderer, 0, GROUND_Y, groundTextureFile, false, GROUND_MOVE_SPEED),
-	gameOverBanner(renderer, WINDOW_CENTER_X, 200, gameOverBannerTextureFile, true),
-	getReadyBanner(renderer, WINDOW_CENTER_X, 200, getReadyBannerTextureFile, true),
-	startBanner(renderer, WINDOW_CENTER_X, 520, startBannerTextureFile, true) {}
+	background(renderer, 0, backgroundNightFile, BACKGROUND_MOVE_SPEED),
+	ground(renderer, GROUND_Y, groundFile, GROUND_MOVE_SPEED),
+	gameOverBanner(renderer, WINDOW_CENTER_X, 200, gameOverBannerFile, true),
+	getReadyBanner(renderer, WINDOW_CENTER_X, 200, getReadyBannerFile, true),
+	startBanner(renderer, WINDOW_CENTER_X, 520, startBannerFile, true),
+	score(renderer), stats(renderer) {}
 
 void Game::RenderDraw()
 {
 	background.RenderDraw(renderer);
 	
 	if (state != GameState::StartScreen)
+	{
 		pipePairsManager.RenderDraw(renderer);
+		score.RenderDraw(renderer);
+	}
 
 	ground.RenderDraw(renderer);
 	bird.RenderDraw(renderer);
@@ -38,6 +42,8 @@ void Game::RenderDrawUI()
 		break;
 	case (GameState::GameOver):
 		gameOverBanner.RenderDraw(renderer);
+		stats.Update(renderer, score.score());
+		stats.RenderDraw(renderer);
 		break;
 	}
 }
@@ -90,6 +96,8 @@ void Game::UpdateCollision()
 {
 	if (pipePairsManager.CheckCollisionWithPipePairs(bird.Rect()))
 		bird.Death();
+	else if (pipePairsManager.IsPassedBy(bird.Left()))
+		score.Increment(renderer);
 }
 
 void Game::Iter()
@@ -115,7 +123,9 @@ void Game::EventHandler(SDL_Event* event)
 		switch (event->key.scancode)
 		{
 		case (SDL_SCANCODE_SPACE):
-			if (state == GameState::Playing)
+			if (event->key.repeat)
+				break;
+			else if (state == GameState::Playing)
 				bird.Flap();
 			else if (state == GameState::GameOver)
 				Restart();
@@ -150,4 +160,5 @@ void Game::Reset()
 {
 	pipePairsManager.Reset();
 	bird.Reset();
+	score.Reset(renderer);
 }

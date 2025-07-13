@@ -19,6 +19,7 @@ public:
 	void Reset();
 
 	bool CheckCollisionWithPipePairs(const SDL_FRect* rect) const;
+	bool IsPassedBy(float targetX) const;
 
 private:
 	std::array<std::unique_ptr<PipePair>, PIPE_PAIRS_COUNT> pipePairs;

@@ -19,8 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\NumberDisplay.cpp" />
+    <ClCompile Include="src\Score.cpp" />
     <ClCompile Include="src\ScrollingLayer.cpp" />
-    <ClCompile Include="src\GameBase.cpp" />
+    <ClCompile Include="src\SDL_Base.cpp" />
     <ClCompile Include="src\AnimatedGameObject.cpp" />
     <ClCompile Include="src\Bird.cpp" />
     <ClCompile Include="src\Game.cpp" />
@@ -29,10 +31,14 @@
     <ClCompile Include="src\Pipe.cpp" />
     <ClCompile Include="src\PipePair.cpp" />
     <ClCompile Include="src\PipePairsManager.cpp" />
+    <ClCompile Include="src\Stats.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\NumberDisplay.h" />
+    <ClInclude Include="src\Score.h" />
+    <ClInclude Include="src\GameObjectBase.h" />
     <ClInclude Include="src\ScrollingLayer.h" />
-    <ClInclude Include="src\GameBase.h" />
+    <ClInclude Include="src\SDL_Base.h" />
     <ClInclude Include="src\AnimatedGameObject.h" />
     <ClInclude Include="src\Bird.h" />
     <ClInclude Include="src\Collider.h" />
@@ -42,6 +48,7 @@
     <ClInclude Include="src\Pipe.h" />
     <ClInclude Include="src\PipePair.h" />
     <ClInclude Include="src\PipePairsManager.h" />
+    <ClInclude Include="src\Stats.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitattributes" />
@@ -143,7 +150,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SDL3.lib;SDL3_test.lib;SDL3_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\SDL3-3.2.10\lib\x64;$(SolutionDir)\SDL3_image-3.2.4\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\SDL3_ttf-3.2.2\lib\x64;$(SolutionDir)\SDL3-3.2.10\lib\x64;$(SolutionDir)\SDL3_image-3.2.4\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
