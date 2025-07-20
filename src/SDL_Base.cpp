@@ -22,10 +22,12 @@ SDL_Base::SDL_Base()
 	SDL_Surface* iconSurface = IMG_Load(iconFile);
 	if (!iconSurface)
 		SDL_Log("Failed to load icon [%s]", SDL_GetError());
-	else if (!SDL_SetWindowIcon(window, iconSurface))
-		SDL_Log("Error setting icon [%s]", SDL_GetError());
-
-	SDL_DestroySurface(iconSurface);
+	else
+	{
+		if (!SDL_SetWindowIcon(window, iconSurface))
+			SDL_Log("Error setting icon [%s]", SDL_GetError());
+		SDL_DestroySurface(iconSurface);
+	}
 }
 
 SDL_Base::~SDL_Base()

@@ -14,7 +14,7 @@ public:
 	~ScrollingLayer() = default;
 
 	void RenderDraw(SDL_Renderer* renderer) const;
-	void Update();
+	void Update(float deltaTime);
 
 private:
 	std::vector<std::unique_ptr<GameObject>> layerPieces;

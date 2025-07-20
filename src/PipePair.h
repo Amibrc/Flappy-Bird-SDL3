@@ -25,7 +25,7 @@ public:
     void SetRandomGapPosition();
 
     void RenderDraw(SDL_Renderer* renderer) const;
-    void Update();
+    void Update(float deltaTime);
     
 private:
     bool isPassedBy;

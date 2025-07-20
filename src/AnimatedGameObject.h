@@ -16,7 +16,7 @@ public:
 	virtual ~AnimatedGameObject();
 
 	virtual void RenderDraw(SDL_Renderer* renderer) const override;
-	virtual void Update();
+	virtual void Update(Uint64 nowTicks);
 
 	bool HasTextures() const;
 

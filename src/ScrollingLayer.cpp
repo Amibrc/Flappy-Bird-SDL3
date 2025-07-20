@@ -9,7 +9,8 @@ ScrollingLayer::ScrollingLayer(SDL_Renderer* renderer, float y, const char* cons
 {
 	auto first = std::make_unique<GameObject>(renderer, 0, y, file, false);
 
-	if (!first->HasTexture()) return;
+	if (!first->HasTexture())
+		return;
 
 	int count = (int)WINDOW_WIDTH / first->Width() + 2;
 
@@ -23,17 +24,19 @@ ScrollingLayer::ScrollingLayer(SDL_Renderer* renderer, float y, const char* cons
 void ScrollingLayer::RenderDraw(SDL_Renderer* renderer) const
 {
 	for (const auto& piece : layerPieces)
-		piece->RenderDraw(renderer);
+		if (piece->Left() < WINDOW_WIDTH)
+			piece->RenderDraw(renderer);
 }
 
-void ScrollingLayer::Update()
+void ScrollingLayer::Update(float deltaTime)
 {
-	if (layerPieces.empty()) return;
+	if (layerPieces.empty())
+		return;
 
 	for (auto& piece : layerPieces)
 	{
-		piece->MoveX(-speed);
-		if (piece->Right() < 0)
+		piece->MoveX(deltaTime, -speed);
+		if (piece->Right() <= 0)
 			piece->MoveX(layerPieces.size() * layerPieces.front()->Width());
 	}
 }

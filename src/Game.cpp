@@ -4,15 +4,74 @@
 #include "Game.h"
 #include "Config.h"
 
+#include <iostream>
+
 Game::Game()
 	: state(GameState::StartScreen),
-	bird(renderer), pipePairsManager(renderer),
+	lastTicks(SDL_GetTicks()), bird(renderer), pipePairsManager(renderer),
 	background(renderer, 0, backgroundNightFile, BACKGROUND_MOVE_SPEED),
 	ground(renderer, GROUND_Y, groundFile, GROUND_MOVE_SPEED),
 	gameOverBanner(renderer, WINDOW_CENTER_X, 200, gameOverBannerFile, true),
 	getReadyBanner(renderer, WINDOW_CENTER_X, 200, getReadyBannerFile, true),
 	startBanner(renderer, WINDOW_CENTER_X, 520, startBannerFile, true),
 	score(renderer), stats(renderer) {}
+
+SDL_AppResult Game::Iter()
+{
+	Uint64 nowTicks = SDL_GetTicks();
+	float deltaTime = (nowTicks - lastTicks) / 1000.0f;
+	lastTicks = nowTicks;
+
+	Update(deltaTime, nowTicks);
+	RenderDraw();
+
+	Uint64 frameTime = SDL_GetTicks() - nowTicks;
+	if (frameTime < DELAY_MS)
+		SDL_Delay(DELAY_MS - frameTime);
+
+	return SDL_APP_CONTINUE;
+}
+
+SDL_AppResult Game::EventHandler(SDL_Event* event)
+{
+	switch (event->type)
+	{
+	case SDL_EVENT_QUIT:
+		return SDL_APP_SUCCESS;
+	case SDL_EVENT_MOUSE_BUTTON_DOWN:
+		if (state == GameState::Playing)
+			bird.Flap();
+		else if (state == GameState::GameOver)
+			Restart();
+		else
+			StartPlaying();
+		break;
+	case SDL_EVENT_KEY_DOWN:
+		switch (event->key.scancode)
+		{
+		case (SDL_SCANCODE_SPACE):
+			if (event->key.repeat)
+				break;
+			else if (state == GameState::Playing)
+				bird.Flap();
+			else if (state == GameState::GameOver)
+				Restart();
+			else
+				StartPlaying();
+			break;
+		case (SDL_SCANCODE_ESCAPE):
+			if (state != GameState::StartScreen)
+			{
+				Reset();
+				state = GameState::StartScreen;
+			}
+			break;
+		}
+		break;
+	}
+
+	return SDL_APP_CONTINUE;
+}
 
 void Game::RenderDraw()
 {
@@ -48,32 +107,32 @@ void Game::RenderDrawUI()
 	}
 }
 
-void Game::Update()
+void Game::Update(float deltaTime, Uint64 nowTicks)
 {
 	switch (state)
 	{
 	case (GameState::StartScreen):
-		UpdateStartScreen();
+		UpdateStartScreen(deltaTime, nowTicks);
 		break;
 	case (GameState::Playing):
-		UpdatePlaying();
+		UpdatePlaying(deltaTime, nowTicks);
 		break;
 	case (GameState::GameOver):
-		UpdateGameOver();
+		UpdateGameOver(deltaTime, nowTicks);
 		break;
 	}
 }
 
-void Game::UpdateStartScreen()
+void Game::UpdateStartScreen(float deltaTime, Uint64 nowTicks)
 {
-	bird.IdleFly();
-	background.Update();
-	ground.Update();
+	bird.IdleFly(deltaTime, nowTicks);
+	background.Update(deltaTime);
+	ground.Update(deltaTime);
 }
 
-void Game::UpdatePlaying()
+void Game::UpdatePlaying(float deltaTime, Uint64 nowTicks)
 {
-	bird.Update();
+	bird.Update(deltaTime, nowTicks);
 
 	if (!bird.IsAlive())
 	{
@@ -81,15 +140,15 @@ void Game::UpdatePlaying()
 		return;
 	}
 
-	background.Update();
-	ground.Update();
-	pipePairsManager.Update();
+	background.Update(deltaTime);
+	ground.Update(deltaTime);
+	pipePairsManager.Update(deltaTime);
 	UpdateCollision();
 }
 
-void Game::UpdateGameOver()
+void Game::UpdateGameOver(float deltaTime, Uint64 nowTicks)
 {
-	bird.Update();
+	bird.Update(deltaTime, nowTicks);
 }
 
 void Game::UpdateCollision()
@@ -98,50 +157,6 @@ void Game::UpdateCollision()
 		bird.Death();
 	else if (pipePairsManager.IsPassedBy(bird.Left()))
 		score.Increment(renderer);
-}
-
-void Game::Iter()
-{
-	Update();
-	RenderDraw();
-	SDL_Delay(DELAY_MS);
-}
-
-void Game::EventHandler(SDL_Event* event)
-{
-	switch (event->type)
-	{
-	case SDL_EVENT_MOUSE_BUTTON_DOWN:
-		if (state == GameState::Playing)
-			bird.Flap();
-		else if (state == GameState::GameOver)
-			Restart();
-		else
-			StartPlaying();
-		break;
-	case SDL_EVENT_KEY_DOWN:
-		switch (event->key.scancode)
-		{
-		case (SDL_SCANCODE_SPACE):
-			if (event->key.repeat)
-				break;
-			else if (state == GameState::Playing)
-				bird.Flap();
-			else if (state == GameState::GameOver)
-				Restart();
-			else
-				StartPlaying();
-			break;
-		case (SDL_SCANCODE_ESCAPE):
-			if (state != GameState::StartScreen)
-			{
-				Reset();
-				state = GameState::StartScreen;
-			}
-			break;
-		}
-		break;
-	}
 }
 
 void Game::StartPlaying()

@@ -6,7 +6,6 @@
 
 #include "Game.h"
 
-
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 {
 	*appstate = new Game();
@@ -16,23 +15,13 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
 	Game* game = (Game*)appstate;
-	game->Iter();
-	return SDL_APP_CONTINUE;
+	return game->Iter();
 }
 
 SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 {
 	Game* game = (Game*)appstate;
-
-	switch (event->type)
-	{
-	case SDL_EVENT_QUIT:
-		return SDL_APP_SUCCESS;
-	}
-
-	game->EventHandler(event);
-
-	return SDL_APP_CONTINUE;
+	return game->EventHandler(event);
 }
 
 void SDL_AppQuit(void* appstate, SDL_AppResult result)

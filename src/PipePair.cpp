@@ -15,10 +15,10 @@ void PipePair::RenderDraw(SDL_Renderer* renderer) const
 	upperPipe.RenderDraw(renderer);
 }
 
-void PipePair::Update()
+void PipePair::Update(float deltaTime)
 {
-	lowerPipe.Update();
-	upperPipe.Update();
+	lowerPipe.Update(deltaTime);
+	upperPipe.Update(deltaTime);
 }
 
 void PipePair::SetRandomGapPosition()

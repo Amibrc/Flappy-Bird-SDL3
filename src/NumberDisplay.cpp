@@ -16,12 +16,12 @@ NumberDisplay::NumberDisplay(const char* fileSuffix)
 			SDL_Log("Error to load surface [%s]", SDL_GetError());
 	}
 
-	for (auto& surface : digitSurfaces)
+	for (auto& surf : digitSurfaces)
 	{
-		if (surface)
+		if (surf)
 		{
-			digitW = surface->w;
-			digitH = surface->h;
+			digitW = surf->w;
+			digitH = surf->h;
 			return;
 		}
 	}

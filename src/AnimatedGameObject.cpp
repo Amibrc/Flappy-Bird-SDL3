@@ -17,29 +17,25 @@ AnimatedGameObject::AnimatedGameObject(SDL_Renderer* renderer,
 			SDL_Log("Failed to load texture [%s]", SDL_GetError());
 	}
 
-	SDL_Texture* validTexture = nullptr;
-	for (auto& texture : textures)
+	for (auto& tex : textures)
 	{
-		if (texture)
+		if (tex)
 		{
-			validTexture = texture;
-			break;
+			if (isPosCenter)
+				rect = { x - tex->w / 2.0f, y - tex->h / 2.0f, (float)tex->w, (float)tex->h };
+			else
+				rect = { x, y, (float)tex->w, (float)tex->h };
+			return;
 		}
 	}
 
-	if (validTexture)
-		if (isPosCenter)
-			rect = { x - validTexture->w / 2.0f, y - validTexture->h / 2.0f, (float)validTexture->w, (float)validTexture->h };
-		else
-			rect = { x, y, (float)validTexture->w, (float)validTexture->h };
-	else
-		rect = { x, y, 0, 0 };
+	rect = { x, y, 0, 0 };
 }
 
 AnimatedGameObject::~AnimatedGameObject()
 {
-	for (auto& texture : textures)
-		SDL_DestroyTexture(texture);
+	for (auto& tex : textures)
+		SDL_DestroyTexture(tex);
 }
 
 void AnimatedGameObject::RenderDraw(SDL_Renderer* renderer) const
@@ -47,9 +43,8 @@ void AnimatedGameObject::RenderDraw(SDL_Renderer* renderer) const
 	SDL_RenderTexture(renderer, textures[currentTextureIndex], nullptr, &rect);
 }
 
-void AnimatedGameObject::Update()
+void AnimatedGameObject::Update(Uint64 nowTicks)
 {
-	Uint64 nowTicks = SDL_GetTicks();
 	if (nowTicks - lastTicks >= frameDuration)
 	{
 		++currentTextureIndex %= textures.size();
@@ -59,8 +54,8 @@ void AnimatedGameObject::Update()
 
 bool AnimatedGameObject::HasTextures() const
 {
-	for (const auto& texture : textures)
-		if (texture == nullptr)
+	for (const auto& tex : textures)
+		if (tex == nullptr)
 			return false;
 	return true;
 }

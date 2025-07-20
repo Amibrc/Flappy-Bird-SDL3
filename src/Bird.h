@@ -16,14 +16,14 @@ public:
 	inline void Death() { alive = false; }
 
 	void RenderDraw(SDL_Renderer* renderer) const override;
-	void Update() override;
+	void Update(float deltaTime, Uint64 nowTicks);
 
 	void Flap();
 	void Reset();
-	void IdleFly();
+	void IdleFly(float deltaTime, Uint64 nowTicks);
 
 private:
-	enum BirbFrames
+	enum class BirbFrames
 	{
 		UpFlap,
 		MidFlap,
@@ -35,6 +35,6 @@ private:
 	float angle;
 	bool alive;
 
-	void UpdateMovement();
-	void UpdateAngle();
+	void UpdateMovement(float deltaTime);
+	void UpdateAngle(float deltaTime);
 };

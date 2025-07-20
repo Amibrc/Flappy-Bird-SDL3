@@ -6,16 +6,16 @@ constexpr unsigned short WINDOW_HEIGHT = 768;
 constexpr float WINDOW_CENTER_X = WINDOW_WIDTH / 2.0f;
 constexpr float WINDOW_CENTER_Y = WINDOW_HEIGHT / 2.0f;
 
-constexpr unsigned int FPS = 60;
-constexpr unsigned int DELAY_MS = 1000 / FPS;
+constexpr unsigned int FPS = 120;
+constexpr unsigned int DELAY_MS = (FPS == 0) ? 0 : 1000 / FPS;
 
-constexpr float GRAVITY = 1.0f;
+constexpr float GRAVITY = 3400.0f;
 
 constexpr float GROUND_Y = WINDOW_HEIGHT - WINDOW_HEIGHT / 10.0f;
-constexpr float GROUND_MOVE_SPEED = 5.0f;
-constexpr float BACKGROUND_MOVE_SPEED = 0.5f;
+constexpr float GROUND_MOVE_SPEED = 300.0f;
+constexpr float BACKGROUND_MOVE_SPEED = 30.0f;
 
-constexpr float PIPE_MOVE_SPEED = 5.0f;
+constexpr float PIPE_MOVE_SPEED = 300.0f;
 constexpr float PIPE_PAIR_GAP = 200.0f;
 constexpr float PIPE_PAIRS_DISTANCE = 250.0f;
 constexpr float PIPE_PAIRS_START_X = WINDOW_WIDTH + 200.0f;
@@ -23,10 +23,11 @@ constexpr float PIPE_MIN_Y = 100.0f;
 constexpr float PIPE_MAX_Y = GROUND_Y - PIPE_PAIR_GAP - PIPE_MIN_Y;
 constexpr unsigned short PIPE_PAIRS_COUNT = 3;
 
-constexpr float BIRD_FLAP_FORCE = 13.0f;
+constexpr float BIRD_FLAP_FORCE = 780.0f;
 constexpr float BIRD_MIN_ANGLE = -20.0f;
 constexpr float BIRD_MAX_ANGLE = 90.0f;
-constexpr float BIRD_ROTATING_SPEED = 5.0f;
+constexpr float BIRD_ROTATING_SPEED = 300.0f;
+constexpr float BIRD_COUNTER = 6.0f;
 
 constexpr int SCORE_MEDAL_BRONZE = 10;
 constexpr int SCORE_MEDAL_SILVER = 15;
@@ -37,7 +38,7 @@ constexpr const char* iconFile = "assets/icon.png";
 
 constexpr const char* gameOverBannerFile = "assets/gameOverBanner.png";
 constexpr const char* getReadyBannerFile = "assets/getReadyBanner.png";
-constexpr const char* startBannerFile = "assets/startBanner-1.png";
+constexpr const char* startBannerFile = "assets/startBanner.png";
 constexpr const char* statsBannerFile = "assets/statsBanner.png";
 
 constexpr const char* backgroundDayFile = "assets/backgroundDay.png";

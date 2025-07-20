@@ -14,16 +14,17 @@ PipePairsManager::PipePairsManager(SDL_Renderer* renderer)
 void PipePairsManager::RenderDraw(SDL_Renderer* renderer) const
 {
 	for (const auto& pair : pipePairs)
-		pair->RenderDraw(renderer);
+		if (pair->Left() < WINDOW_WIDTH)
+			pair->RenderDraw(renderer);
 }
 
-void PipePairsManager::Update()
+void PipePairsManager::Update(float deltaTime)
 {
 	for (int i = 0; i < PIPE_PAIRS_COUNT; ++i)
 	{
-		pipePairs[i]->Update();
+		pipePairs[i]->Update(deltaTime);
 
-		if (pipePairs[i]->Right() < 0)
+		if (pipePairs[i]->Right() <= 0)
 		{
 			int prevIndex = (i - 1 + PIPE_PAIRS_COUNT) % PIPE_PAIRS_COUNT;
 			float newX = pipePairs[prevIndex]->Right() + PIPE_PAIRS_DISTANCE;

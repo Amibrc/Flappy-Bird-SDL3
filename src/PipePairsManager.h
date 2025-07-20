@@ -15,7 +15,7 @@ public:
 	~PipePairsManager() = default;
 
 	void RenderDraw(SDL_Renderer* renderer) const;
-	void Update();
+	void Update(float deltaTime);
 	void Reset();
 
 	bool CheckCollisionWithPipePairs(const SDL_FRect* rect) const;

@@ -31,8 +31,8 @@ Stats::~Stats()
 {
 	SDL_DestroySurface(bannerSurface);
 
-	for (auto& surface : medalSurfaces)
-		SDL_DestroySurface(surface);
+	for (auto& surf : medalSurfaces)
+		SDL_DestroySurface(surf);
 }
 
 void Stats::RenderDraw(SDL_Renderer* renderer) const

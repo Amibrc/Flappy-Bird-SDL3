@@ -12,7 +12,7 @@ public:
 	~Pipe() = default;
 
 	void RenderDraw(SDL_Renderer* renderer) const override;
-	inline void Update() { rect.x -= PIPE_MOVE_SPEED; }
+	inline void Update(float deltaTime) { rect.x -= PIPE_MOVE_SPEED * deltaTime; }
 
 private:
 	bool flipped;

@@ -17,8 +17,8 @@ public:
 	Game();
 	~Game() = default;
 
-	void Iter();
-	void EventHandler(SDL_Event* event);
+	SDL_AppResult Iter();
+	SDL_AppResult EventHandler(SDL_Event* event);
 	
 private:
 	enum class GameState
@@ -27,6 +27,8 @@ private:
 		Playing,
 		GameOver
 	};
+
+	Uint64 lastTicks;
 
 	GameObject gameOverBanner;
 	GameObject getReadyBanner;
@@ -44,10 +46,10 @@ private:
 	void RenderDraw();
 	void RenderDrawUI();
 
-	void Update();
-	void UpdateStartScreen();
-	void UpdatePlaying();
-	void UpdateGameOver();
+	void Update(float deltaTime, Uint64 nowTicks);
+	void UpdateStartScreen(float deltaTime, Uint64 nowTicks);
+	void UpdatePlaying(float deltaTime, Uint64 nowTicks);
+	void UpdateGameOver(float deltaTime, Uint64 nowTicks);
 	void UpdateCollision();
 
 	void StartPlaying();
