@@ -22,7 +22,9 @@ add_executable(FlappyBird
 	src/Score.cpp
 	src/ScrollingLayer.cpp
 	src/SDL_Base.cpp
-	src/Stats.cpp)
+	src/Stats.cpp
+	
+	src/MultiTextureObject.cpp)
 
 target_link_libraries(FlappyBird PRIVATE SDL3::SDL3 SDL3_image::SDL3_image)
 

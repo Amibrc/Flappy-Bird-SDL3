@@ -12,13 +12,12 @@ public:
 	~Bird() = default;
 
 	inline bool IsAlive() const { return alive; }
-	inline bool IsFalling() const { return angle == BIRD_MAX_ANGLE; }
-	inline void Death() { alive = false; }
 
 	void RenderDraw(SDL_Renderer* renderer) const override;
 	void Update(float deltaTime, Uint64 nowTicks);
 
 	void Flap();
+	void Death();
 	void Reset();
 	void IdleFly(float deltaTime, Uint64 nowTicks);
 
@@ -35,6 +34,7 @@ private:
 	float angle;
 	bool alive;
 
+	void UpdateCollision();
 	void UpdateMovement(float deltaTime);
-	void UpdateAngle(float deltaTime);
+	void UpdateAngleAndAnimation(float deltaTime, Uint64 nowTicks);
 };

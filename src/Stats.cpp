@@ -8,16 +8,19 @@
 #include "Config.h"
 
 Stats::Stats(SDL_Renderer* renderer)
-	: NumberDisplay("-1.png"), bannerSurface(IMG_Load(statsBannerFile)),
-	texture(nullptr), cachedScore(SIZE_MAX), bestScore(0)
+	: NumberDisplay("-1.png"), statsBannerSurface(IMG_Load(statsBannerFile)),
+	newBannerSurface(IMG_Load(newBannerFile)), texture(nullptr), cachedScore(SIZE_MAX), bestScore(0)
 {
-	if (!bannerSurface)
+	if (!statsBannerSurface)
 	{
 		SDL_Log("Error to load surface [%s]", SDL_GetError());
 		rect = { WINDOW_CENTER_X, 300.0f, 0, 0 };
 	}
 	else
-		rect = { WINDOW_CENTER_X - bannerSurface->w / 2.0f, 300.0f, (float)bannerSurface->w, (float)bannerSurface->h };
+		rect = { WINDOW_CENTER_X - statsBannerSurface->w / 2.0f, 300.0f, (float)statsBannerSurface->w, (float)statsBannerSurface->h };
+
+	if (!newBannerFile)
+		SDL_Log("Error to load surface [%s]", SDL_GetError());
 
 	for (int i = 0; i < 4; ++i)
 	{
@@ -29,7 +32,8 @@ Stats::Stats(SDL_Renderer* renderer)
 
 Stats::~Stats()
 {
-	SDL_DestroySurface(bannerSurface);
+	SDL_DestroySurface(statsBannerSurface);
+	SDL_DestroySurface(newBannerSurface);
 
 	for (auto& surf : medalSurfaces)
 		SDL_DestroySurface(surf);
@@ -45,9 +49,6 @@ void Stats::Update(SDL_Renderer* renderer, size_t score)
 	if (score == cachedScore)
 		return;
 
-	if (score > bestScore)
-		bestScore = score;
-
 	if (texture)
 		SDL_DestroyTexture(texture);
 
@@ -57,10 +58,19 @@ void Stats::Update(SDL_Renderer* renderer, size_t score)
 	if (!surface)
 	{
 		SDL_Log("Error to create surface [%s]", SDL_GetError());
+		if (score > bestScore)
+			bestScore = score;
 		return;
 	}
 
-	RenderBanner(surface);
+	RenderStatsBanner(surface);
+
+	if (score > bestScore)
+	{
+		bestScore = score;
+		RenderNewBanner(surface);
+	}
+
 	RenderMedal(surface, score);
 	RenderNumber(surface, score, 70);
 	RenderNumber(surface, bestScore, 150);
@@ -69,10 +79,16 @@ void Stats::Update(SDL_Renderer* renderer, size_t score)
 	SDL_DestroySurface(surface);
 }
 
-void Stats::RenderBanner(SDL_Surface* target)
+void Stats::RenderStatsBanner(SDL_Surface* target)
 {
 	SDL_Rect dstrect = { 0, 0, 0, 0 };
-	SDL_BlitSurface(bannerSurface, nullptr, target, &dstrect);
+	SDL_BlitSurface(statsBannerSurface, nullptr, target, &dstrect);
+}
+
+void Stats::RenderNewBanner(SDL_Surface* target)
+{
+	SDL_Rect dstrect = { 280, 120, 0, 0 };
+	SDL_BlitSurface(newBannerSurface, nullptr, target, &dstrect);
 }
 
 void Stats::RenderNumber(SDL_Surface* target, size_t number, int y)

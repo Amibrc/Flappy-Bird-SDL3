@@ -3,18 +3,19 @@
 
 #include "Game.h"
 #include "Config.h"
-
-#include <iostream>
+#include "Collider.h"
 
 Game::Game()
 	: state(GameState::StartScreen),
 	lastTicks(SDL_GetTicks()), bird(renderer), pipePairsManager(renderer),
 	background(renderer, 0, backgroundNightFile, BACKGROUND_MOVE_SPEED),
-	ground(renderer, GROUND_Y, groundFile, GROUND_MOVE_SPEED),
+	ground(renderer, BOTTOM_GROUND_Y, groundFile, GROUND_MOVE_SPEED),
 	gameOverBanner(renderer, WINDOW_CENTER_X, 200, gameOverBannerFile, true),
 	getReadyBanner(renderer, WINDOW_CENTER_X, 200, getReadyBannerFile, true),
 	startBanner(renderer, WINDOW_CENTER_X, 520, startBannerFile, true),
-	score(renderer), stats(renderer) {}
+	pauseButton(renderer, 20, 20, pauseButtonFiles, 2, false),
+	okButton(renderer, WINDOW_CENTER_X, 600, okButtonFile, true),
+	score(renderer), stats(renderer), pause(false) {}
 
 SDL_AppResult Game::Iter()
 {
@@ -38,39 +39,64 @@ SDL_AppResult Game::EventHandler(SDL_Event* event)
 	{
 	case SDL_EVENT_QUIT:
 		return SDL_APP_SUCCESS;
+
 	case SDL_EVENT_MOUSE_BUTTON_DOWN:
-		if (state == GameState::Playing)
-			bird.Flap();
-		else if (state == GameState::GameOver)
-			Restart();
-		else
-			StartPlaying();
+		HandleMouseClick(event->button.x, event->button.y);
 		break;
+
 	case SDL_EVENT_KEY_DOWN:
-		switch (event->key.scancode)
-		{
-		case (SDL_SCANCODE_SPACE):
-			if (event->key.repeat)
-				break;
-			else if (state == GameState::Playing)
-				bird.Flap();
-			else if (state == GameState::GameOver)
-				Restart();
-			else
-				StartPlaying();
-			break;
-		case (SDL_SCANCODE_ESCAPE):
-			if (state != GameState::StartScreen)
-			{
-				Reset();
-				state = GameState::StartScreen;
-			}
-			break;
-		}
+		HandleKeyPress(&event->key);
 		break;
 	}
 
 	return SDL_APP_CONTINUE;
+}
+
+void Game::HandleMouseClick(float x, float y)
+{
+	if (pauseButton.IsClicked(x, y))
+	{
+		TogglePause();
+		return;
+	}
+
+	if (!pause)
+	{
+		HandleGameAction();
+		if (state == GameState::GameOver && okButton.IsClicked(x, y))
+			Restart();
+	}
+}
+
+void Game::HandleKeyPress(const SDL_KeyboardEvent* keyEvent)
+{
+	if (keyEvent->repeat)
+		return;
+
+	switch (keyEvent->scancode)
+	{
+	case SDL_SCANCODE_SPACE:
+		HandleGameAction();
+		break;
+
+	case SDL_SCANCODE_ESCAPE:
+		TogglePause();
+		break;
+	}
+}
+
+void Game::HandleGameAction()
+{
+	switch (state)
+	{
+	case GameState::Playing:
+		bird.Flap();
+		break;
+
+	case GameState::StartScreen:
+		StartPlaying();
+		break;
+	}
 }
 
 void Game::RenderDraw()
@@ -83,8 +109,8 @@ void Game::RenderDraw()
 		score.RenderDraw(renderer);
 	}
 
-	ground.RenderDraw(renderer);
 	bird.RenderDraw(renderer);
+	ground.RenderDraw(renderer);
 
 	RenderDrawUI();
 
@@ -103,21 +129,29 @@ void Game::RenderDrawUI()
 		gameOverBanner.RenderDraw(renderer);
 		stats.Update(renderer, score.score());
 		stats.RenderDraw(renderer);
+		okButton.RenderDraw(renderer);
 		break;
 	}
+
+	pauseButton.RenderDraw(renderer);
 }
 
 void Game::Update(float deltaTime, Uint64 nowTicks)
 {
+	if (pause)
+		return;
+
 	switch (state)
 	{
 	case (GameState::StartScreen):
 		UpdateStartScreen(deltaTime, nowTicks);
 		break;
+
 	case (GameState::Playing):
 		UpdatePlaying(deltaTime, nowTicks);
 		break;
-	case (GameState::GameOver):
+
+	default:
 		UpdateGameOver(deltaTime, nowTicks);
 		break;
 	}
@@ -167,8 +201,8 @@ void Game::StartPlaying()
 
 void Game::Restart()
 {
+	state = GameState::StartScreen;
 	Reset();
-	StartPlaying();
 }
 
 void Game::Reset()
@@ -176,4 +210,9 @@ void Game::Reset()
 	pipePairsManager.Reset();
 	bird.Reset();
 	score.Reset(renderer);
+}
+
+void Game::TogglePause() {
+	pause = !pause;
+	pauseButton.Switch();
 }

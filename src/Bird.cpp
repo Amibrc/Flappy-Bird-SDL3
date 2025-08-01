@@ -4,7 +4,7 @@
 #include "Config.h"
 
 Bird::Bird(SDL_Renderer* renderer)
-	: AnimatedGameObject(renderer, WINDOW_CENTER_X, WINDOW_CENTER_Y, birdRedFiles, 3, 100, true),
+	: AnimatedGameObject(renderer, WINDOW_CENTER_X, WINDOW_CENTER_Y, birdRedFiles, 3, true, 100),
 	idleFlyCounter(0), velocity(0), angle(0), alive(true) {}
 
 void Bird::RenderDraw(SDL_Renderer* renderer) const
@@ -14,45 +14,55 @@ void Bird::RenderDraw(SDL_Renderer* renderer) const
 
 void Bird::Update(float deltaTime, Uint64 nowTicks)
 {
-	if (IsAlive())
-	{
-		UpdateAngle(deltaTime);
-
-		if (IsFalling())
-			currentTextureIndex = (size_t)BirbFrames::MidFlap;
-		else
-			AnimatedGameObject::Update(nowTicks);
-	}
-
 	UpdateMovement(deltaTime);
+	UpdateCollision();
+	UpdateAngleAndAnimation(deltaTime, nowTicks);
+}
+
+void Bird::UpdateCollision()
+{
+	if (Top() < TOP_GROUND_Y)
+	{
+		SetY(TOP_GROUND_Y);
+		velocity = 0;
+	}
+	else if (Bottom() > BOTTOM_GROUND_Y)
+	{
+		SetY(BOTTOM_GROUND_Y - Height());
+		Death();
+	}
 }
 
 void Bird::UpdateMovement(float deltaTime)
 {
 	velocity += GRAVITY * deltaTime;
 	MoveY(deltaTime, velocity);
-
-	if (Top() <= 0)
-	{
-		SetY(0);
-		velocity = 0;
-	}
-	else if (Bottom() >= GROUND_Y)
-	{
-		SetY(GROUND_Y - Height());
-		Death();
-	}
 }
 
-void Bird::UpdateAngle(float deltaTime)
+void Bird::UpdateAngleAndAnimation(float deltaTime, Uint64 nowTicks)
 {
 	if (velocity < 0)
+	{
 		angle = BIRD_MIN_ANGLE;
+
+		if (IsAlive())
+			AnimatedGameObject::Update(nowTicks);
+	}
 	else
 	{
-		angle += BIRD_ROTATING_SPEED * deltaTime;
+		if (IsAlive())
+		{
+			angle += BIRD_ROTATING_SPEED * deltaTime;
+			AnimatedGameObject::Update(nowTicks);
+		}
+		else
+			angle += BIRD_ROTATING_SPEED * 2 * deltaTime;
+
 		if (angle > BIRD_MAX_ANGLE)
+		{
 			angle = BIRD_MAX_ANGLE;
+			currentTextureIndex = (size_t)BirbFrames::MidFlap;
+		}
 	}
 }
 
@@ -60,6 +70,12 @@ void Bird::Flap()
 {
 	if (IsAlive())
 		velocity = -BIRD_FLAP_FORCE;
+}
+
+void Bird::Death()
+{
+	alive = false;
+	currentTextureIndex = (size_t)BirbFrames::MidFlap;
 }
 
 void Bird::Reset()

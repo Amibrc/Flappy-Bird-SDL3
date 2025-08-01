@@ -2,6 +2,8 @@
 
 #include <SDL3/SDL.h>
 
+#include "Collider.h"
+
 class GameObjectBase
 {
 public:
@@ -18,6 +20,8 @@ public:
 	inline float Top() const { return rect.y; }
 	inline float Bottom() const { return rect.y + rect.h; }
 
+	inline bool IsClicked(float x, float y) const { return Collider::CheckCollision(x, y, &rect); }
+
 	inline void SetX(float newX) { rect.x = newX; }
 	inline void SetY(float newY) { rect.y = newY; }
 
@@ -29,7 +33,7 @@ public:
 
 	inline void MoveX(float deltaTime, float dX) { rect.x += dX * deltaTime; }
 	inline void MoveY(float deltaTime, float dY) { rect.y += dY * deltaTime; }
-
+	
 	virtual void RenderDraw(SDL_Renderer* renderer) const = 0;
 
 protected:

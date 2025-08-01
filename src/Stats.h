@@ -18,12 +18,14 @@ public:
 
 private:
 	SDL_Texture* texture;
-	SDL_Surface* bannerSurface;
+	SDL_Surface* statsBannerSurface;
+	SDL_Surface* newBannerSurface;
 	std::array<SDL_Surface*, 4> medalSurfaces;
 	size_t cachedScore;
 	size_t bestScore;
 
-	void RenderBanner(SDL_Surface* target);
+	void RenderStatsBanner(SDL_Surface* target);
+	void RenderNewBanner(SDL_Surface* target);
 	void RenderNumber(SDL_Surface* target, size_t number, int y);
 	void RenderMedal(SDL_Surface* target, size_t score);
 };

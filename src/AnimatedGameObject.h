@@ -4,16 +4,16 @@
 
 #include <vector>
 
-#include "GameObjectBase.h"
+#include "MultiTextureObject.h"
 
-class AnimatedGameObject : public GameObjectBase
+class AnimatedGameObject : public MultiTextureObject
 {
 public:
 	AnimatedGameObject(SDL_Renderer* renderer,
 						float x, float y,
 						const char* const files[], size_t count,
-						Uint64 frameDuration, bool isPosCenter);
-	virtual ~AnimatedGameObject();
+						bool isPosCenter, Uint64 frameDuration);
+	virtual ~AnimatedGameObject() = default;
 
 	virtual void RenderDraw(SDL_Renderer* renderer) const override;
 	virtual void Update(Uint64 nowTicks);
@@ -21,8 +21,6 @@ public:
 	bool HasTextures() const;
 
 protected:
-	std::vector<SDL_Texture*> textures;
-	size_t currentTextureIndex;
 	Uint64 frameDuration;
 	Uint64 lastTicks;
 };

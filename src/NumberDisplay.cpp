@@ -16,7 +16,7 @@ NumberDisplay::NumberDisplay(const char* fileSuffix)
 			SDL_Log("Error to load surface [%s]", SDL_GetError());
 	}
 
-	for (auto& surf : digitSurfaces)
+	for (const auto& surf : digitSurfaces)
 	{
 		if (surf)
 		{

@@ -10,6 +10,7 @@
 #include "PipePairsManager.h"
 #include "Score.h"
 #include "Stats.h"
+#include "MultiTextureObject.h"
 
 class Game : SDL_Base
 {
@@ -28,11 +29,15 @@ private:
 		GameOver
 	};
 
+	bool pause;
 	Uint64 lastTicks;
 
 	GameObject gameOverBanner;
 	GameObject getReadyBanner;
 	GameObject startBanner;
+
+	MultiTextureObject pauseButton;
+	GameObject okButton;
 
 	ScrollingLayer background;
 	ScrollingLayer ground;
@@ -42,6 +47,10 @@ private:
 	PipePairsManager pipePairsManager;
 	Score score;
 	Stats stats;
+
+	void HandleMouseClick(float x, float y);
+	void HandleKeyPress(const SDL_KeyboardEvent* keyEvent);
+	void HandleGameAction();
 
 	void RenderDraw();
 	void RenderDrawUI();
@@ -55,4 +64,5 @@ private:
 	void StartPlaying();
 	void Restart();
 	void Reset();
+	void TogglePause();
 };

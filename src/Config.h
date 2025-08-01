@@ -6,12 +6,14 @@ constexpr unsigned short WINDOW_HEIGHT = 768;
 constexpr float WINDOW_CENTER_X = WINDOW_WIDTH / 2.0f;
 constexpr float WINDOW_CENTER_Y = WINDOW_HEIGHT / 2.0f;
 
-constexpr unsigned int FPS = 120;
+constexpr unsigned int FPS = 0;
 constexpr unsigned int DELAY_MS = (FPS == 0) ? 0 : 1000 / FPS;
 
 constexpr float GRAVITY = 3400.0f;
 
-constexpr float GROUND_Y = WINDOW_HEIGHT - WINDOW_HEIGHT / 10.0f;
+constexpr float TOP_GROUND_Y = 0.0f;
+constexpr float BOTTOM_GROUND_Y = WINDOW_HEIGHT - WINDOW_HEIGHT / 10.0f;
+
 constexpr float GROUND_MOVE_SPEED = 300.0f;
 constexpr float BACKGROUND_MOVE_SPEED = 30.0f;
 
@@ -19,8 +21,8 @@ constexpr float PIPE_MOVE_SPEED = 300.0f;
 constexpr float PIPE_PAIR_GAP = 200.0f;
 constexpr float PIPE_PAIRS_DISTANCE = 250.0f;
 constexpr float PIPE_PAIRS_START_X = WINDOW_WIDTH + 200.0f;
-constexpr float PIPE_MIN_Y = 100.0f;
-constexpr float PIPE_MAX_Y = GROUND_Y - PIPE_PAIR_GAP - PIPE_MIN_Y;
+constexpr float PIPE_MIN_Y = TOP_GROUND_Y + 100.0f;
+constexpr float PIPE_MAX_Y = BOTTOM_GROUND_Y - PIPE_PAIR_GAP - PIPE_MIN_Y;
 constexpr unsigned short PIPE_PAIRS_COUNT = 3;
 
 constexpr float BIRD_FLAP_FORCE = 780.0f;
@@ -40,6 +42,10 @@ constexpr const char* gameOverBannerFile = "assets/gameOverBanner.png";
 constexpr const char* getReadyBannerFile = "assets/getReadyBanner.png";
 constexpr const char* startBannerFile = "assets/startBanner.png";
 constexpr const char* statsBannerFile = "assets/statsBanner.png";
+constexpr const char* newBannerFile = "assets/newBanner.png";
+
+
+constexpr const char* okButtonFile = "assets/okButton.png";
 
 constexpr const char* backgroundDayFile = "assets/backgroundDay.png";
 constexpr const char* backgroundNightFile = "assets/backgroundNight.png";
@@ -49,7 +55,11 @@ constexpr const char* pipeBrownFile = "assets/pipeBrown.png";
 
 constexpr const char* groundFile = "assets/ground.png";
 
-constexpr const char* scoreFontFile = "assets/FlappyBirdRegular-9Pq0.ttf";
+constexpr const char* pauseButtonFiles[] =
+{
+	"assets/pauseButton.png",
+	"assets/resumeButton.png"
+};
 
 constexpr const char* birdYellowFiles[] =
 {
