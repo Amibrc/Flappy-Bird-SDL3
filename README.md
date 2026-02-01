@@ -18,7 +18,7 @@ The code is intentionally kept simple and straightforward.
 
 - **Esc** — pause
 - **Enter** — working like "OK" button
-- **Any mouse buttons** — jump
+- **Any mouse buttons / Space** — jump
 
 ---
 
