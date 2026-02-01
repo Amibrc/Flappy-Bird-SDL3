@@ -4,7 +4,7 @@
 #include "Config.h"
 
 Pipe::Pipe(SDL_Renderer* renderer, float x, float y, bool flipped)
-	: GameObject(renderer, x, y, pipeGreenFile, false), flipped(flipped) {}
+	: GameObject(renderer, x, y, PIPE_GREEN_FILE, false), flipped(flipped) {}
 
 void Pipe::RenderDraw(SDL_Renderer* renderer) const
 {

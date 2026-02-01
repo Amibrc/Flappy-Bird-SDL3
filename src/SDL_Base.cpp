@@ -6,10 +6,10 @@
 
 SDL_Base::SDL_Base()
 {
-	SDL_srand(SDL_GetPerformanceCounter());
-
 	if (!SDL_Init(SDL_INIT_VIDEO))
 		SDL_Log("Error to init SDL [%s]", SDL_GetError());
+
+	SDL_srand(SDL_GetPerformanceCounter());
 	
 	window = SDL_CreateWindow("Flappy Bird", WINDOW_WIDTH, WINDOW_HEIGHT, NULL);
 	if (!window)
@@ -19,7 +19,7 @@ SDL_Base::SDL_Base()
 	if (!renderer)
 		SDL_Log("Error to create renderer [%s]", SDL_GetError());
 
-	SDL_Surface* iconSurface = IMG_Load(iconFile);
+	SDL_Surface* iconSurface = IMG_Load(ICON_FILE);
 	if (!iconSurface)
 		SDL_Log("Failed to load icon [%s]", SDL_GetError());
 	else

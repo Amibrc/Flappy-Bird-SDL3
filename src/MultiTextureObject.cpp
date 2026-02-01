@@ -1,6 +1,8 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 
+#include "TextureManager.h"
+
 #include "MultiTextureObject.h"
 
 MultiTextureObject::MultiTextureObject(SDL_Renderer* renderer, float x, float y, const char* const files[], size_t count, bool isPosCenter)
@@ -8,11 +10,7 @@ MultiTextureObject::MultiTextureObject(SDL_Renderer* renderer, float x, float y,
 {
 	textures.reserve(count);
 	for (size_t i = 0; i < count; ++i)
-	{
-		textures.push_back(IMG_LoadTexture(renderer, files[i]));
-		if (!textures[i])
-			SDL_Log("Failed to load texture [%s]", SDL_GetError());
-	}
+		textures.push_back(TextureManager::GetTexture(renderer, files[i]));
 
 	for (const auto& tex : textures)
 	{
@@ -29,12 +27,6 @@ MultiTextureObject::MultiTextureObject(SDL_Renderer* renderer, float x, float y,
 	rect = { x, y, 0, 0 };
 }
 
-MultiTextureObject::~MultiTextureObject()
-{
-	for (auto& tex : textures)
-		SDL_DestroyTexture(tex);
-}
-
 void MultiTextureObject::RenderDraw(SDL_Renderer* renderer) const
 {
 	SDL_RenderTexture(renderer, textures[currentTextureIndex], nullptr, &rect);
@@ -43,4 +35,12 @@ void MultiTextureObject::RenderDraw(SDL_Renderer* renderer) const
 void MultiTextureObject::Switch()
 {
 	currentTextureIndex = (currentTextureIndex + 1) % textures.size();
+}
+
+bool MultiTextureObject::HasTextures() const
+{
+	for (const auto& tex : textures)
+		if (tex == nullptr)
+			return false;
+	return true;
 }

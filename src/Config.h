@@ -36,56 +36,65 @@ constexpr int SCORE_MEDAL_SILVER = 15;
 constexpr int SCORE_MEDAL_PLATINUM = 20;
 constexpr int SCORE_MEDAL_GOLD = 25;
 
-constexpr const char* iconFile = "assets/icon.png";
+constexpr const char* ICON_FILE = "assets/icon.png";
 
-constexpr const char* gameOverBannerFile = "assets/gameOverBanner.png";
-constexpr const char* getReadyBannerFile = "assets/getReadyBanner.png";
-constexpr const char* startBannerFile = "assets/startBanner.png";
-constexpr const char* statsBannerFile = "assets/statsBanner.png";
-constexpr const char* newBannerFile = "assets/newBanner.png";
+constexpr const char* GAME_OVER_BANNER_FILE = "assets/game-over-banner.png";
+constexpr const char* GET_READY_BANNER_FILE = "assets/get-ready-banner.png";
+constexpr const char* START_BANNER_FILE = "assets/start-banner.png";
+constexpr const char* STATS_BANNER_FILE = "assets/stats-banner.png";
+constexpr const char* NEW_BANNER_FILE = "assets/new-banner.png";
+constexpr const char* FLAPPY_BIRD_BANNER_FILE = "assets/flappy-bird-banner.png";
 
+constexpr const char* OK_BUTTON_FILE = "assets/ok-button.png";
+constexpr const char* START_BUTTON_FILE = "assets/start-button.png";
+constexpr const char* MENU_BUTTON_FILE = "assets/menu-button.png";
 
-constexpr const char* okButtonFile = "assets/okButton.png";
+constexpr const char* BACKGROUND_DAY_FILE = "assets/background-day.png";
+constexpr const char* BACKGROUND_NIGHT_FILE = "assets/background-night.png";
 
-constexpr const char* backgroundDayFile = "assets/backgroundDay.png";
-constexpr const char* backgroundNightFile = "assets/backgroundNight.png";
+constexpr const char* PIPE_GREEN_FILE = "assets/pipe-green.png";
+constexpr const char* PIPE_BROWN_FILE = "assets/pipe-brown.png";
 
-constexpr const char* pipeGreenFile = "assets/pipeGreen.png";
-constexpr const char* pipeBrownFile = "assets/pipeBrown.png";
+constexpr const char* GROUND_FILE = "assets/ground.png";
 
-constexpr const char* groundFile = "assets/ground.png";
-
-constexpr const char* pauseButtonFiles[] =
+constexpr const char* PAUSE_BUTTON_FILES[] =
 {
-	"assets/pauseButton.png",
-	"assets/resumeButton.png"
+	"assets/pause-button.png",
+	"assets/resume-button.png"
 };
 
-constexpr const char* birdYellowFiles[] =
+constexpr const char* BIRD_YELLOW_FILES[] =
 {
-	"assets/birdYellow001.png",
-	"assets/birdYellow002.png",
-	"assets/birdYellow003.png"
+	"assets/bird-yellow-001.png",
+	"assets/bird-yellow-002.png",
+	"assets/bird-yellow-003.png",
 };
 
-constexpr const char* birdRedFiles[] =
+constexpr const char* BIRD_RED_FILES[] =
 {
-	"assets/birdRed001.png",
-	"assets/birdRed002.png",
-	"assets/birdRed003.png"
+	"assets/bird-red-001.png",
+	"assets/bird-red-002.png",
+	"assets/bird-red-003.png"
 };
 
-constexpr const char* birdBlueFiles[] =
+constexpr const char* BIRD_BLUE_FILES[] =
 {
-	"assets/birdBlue001.png",
-	"assets/birdBlue002.png",
-	"assets/birdBlue003.png"
+	"assets/bird-blue-001.png",
+	"assets/bird-blue-002.png",
+	"assets/bird-blue-003.png",
 };
 
-constexpr const char* medalFiles[] =
+constexpr const char* MEDAL_FILES[] =
 {
-	"assets/medalBronze.png",
-	"assets/medalSilver.png",
-	"assets/medalPlatinum.png",
-	"assets/medalGold.png"
+	"assets/medal-bronze.png",
+	"assets/medal-silver.png",
+	"assets/medal-platinum.png",
+	"assets/medal-gold.png"
+};
+
+constexpr const char* PARTICLE_FILES[] =
+{
+	"assets/particle-001.png",
+	"assets/particle-002.png",
+	"assets/particle-003.png"
 };

@@ -16,53 +16,68 @@ class Game : SDL_Base
 {
 public:
 	Game();
-	~Game() = default;
+	~Game();
 
-	SDL_AppResult Iter();
-	SDL_AppResult EventHandler(SDL_Event* event);
+	[[nodiscard]] SDL_AppResult Iter();
+	[[nodiscard]] SDL_AppResult EventHandler(SDL_Event* event);
 	
 private:
+	// ==== Types ====
 	enum class GameState
 	{
+		MainScreen,
 		StartScreen,
 		Playing,
 		GameOver
 	};
 
+	// ==== States ====
 	bool pause;
+	GameState state;
 	Uint64 lastTicks;
 
-	GameObject gameOverBanner;
-	GameObject getReadyBanner;
-	GameObject startBanner;
-
-	MultiTextureObject pauseButton;
-	GameObject okButton;
-
+	// ==== Game objects ====
+	Bird bird;
+	PipePairsManager pipePairsManager;
 	ScrollingLayer background;
 	ScrollingLayer ground;
 
-	Bird bird;
-	GameState state;
-	PipePairsManager pipePairsManager;
+	// ==== UI ====
+	GameObject gameOverBanner;
+	GameObject getReadyBanner;
+	GameObject startBanner;
+	GameObject flappyBirdBanner;
+	GameObject startButton;
+	GameObject menuButton;
+	GameObject okButton;
+	MultiTextureObject pauseButton;
+
+	// ==== Score / Stats ====
 	Score score;
 	Stats stats;
 
+	// ==== Input handlers ====
 	void HandleMouseClick(float x, float y);
 	void HandleKeyPress(const SDL_KeyboardEvent* keyEvent);
 	void HandleGameAction();
 
+	// ==== Rendering ====
 	void RenderDraw();
 	void RenderDrawUI();
 
+	// ==== Updates ====
 	void Update(float deltaTime, Uint64 nowTicks);
+	void UpdateMainScreen(float deltaTime, Uint64 nowTicks);
 	void UpdateStartScreen(float deltaTime, Uint64 nowTicks);
 	void UpdatePlaying(float deltaTime, Uint64 nowTicks);
 	void UpdateGameOver(float deltaTime, Uint64 nowTicks);
 	void UpdateCollision();
 
+	// ==== State transitions ====
 	void StartPlaying();
 	void Restart();
 	void Reset();
+
 	void TogglePause();
+	void PauseOff();
 };

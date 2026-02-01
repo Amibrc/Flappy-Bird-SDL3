@@ -1,21 +1,42 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 
+#include "TextureManager.h"
+
 #include "Game.h"
 #include "Config.h"
 #include "Collider.h"
 
 Game::Game()
-	: state(GameState::StartScreen),
-	lastTicks(SDL_GetTicks()), bird(renderer), pipePairsManager(renderer),
-	background(renderer, 0, backgroundNightFile, BACKGROUND_MOVE_SPEED),
-	ground(renderer, BOTTOM_GROUND_Y, groundFile, GROUND_MOVE_SPEED),
-	gameOverBanner(renderer, WINDOW_CENTER_X, 200, gameOverBannerFile, true),
-	getReadyBanner(renderer, WINDOW_CENTER_X, 200, getReadyBannerFile, true),
-	startBanner(renderer, WINDOW_CENTER_X, 520, startBannerFile, true),
-	pauseButton(renderer, 20, 20, pauseButtonFiles, 2, false),
-	okButton(renderer, WINDOW_CENTER_X, 600, okButtonFile, true),
-	score(renderer), stats(renderer), pause(false) {}
+	// ==== States ====
+	: pause(false),
+	state(GameState::MainScreen),
+	lastTicks(SDL_GetTicks()),
+
+	// ==== Game objects ====
+	bird(renderer, 450, 100, false),
+	pipePairsManager(renderer),
+	background(renderer, 0, BACKGROUND_DAY_FILE, BACKGROUND_MOVE_SPEED),
+	ground(renderer, BOTTOM_GROUND_Y, GROUND_FILE, GROUND_MOVE_SPEED),
+
+	// ==== UI ====
+	gameOverBanner(renderer, WINDOW_CENTER_X, 200, GAME_OVER_BANNER_FILE, true),
+	getReadyBanner(renderer, WINDOW_CENTER_X, 200, GET_READY_BANNER_FILE, true),
+	startBanner(renderer, WINDOW_CENTER_X, 520, START_BANNER_FILE, true),
+	flappyBirdBanner(renderer, WINDOW_CENTER_X - 20, 200, FLAPPY_BIRD_BANNER_FILE, true),
+	startButton(renderer, WINDOW_CENTER_X, 550, START_BUTTON_FILE, true),
+	menuButton(renderer, WINDOW_CENTER_X + 115, 600, MENU_BUTTON_FILE, true),
+	okButton(renderer, WINDOW_CENTER_X - 115, 600, OK_BUTTON_FILE, true),
+	pauseButton(renderer, 20, 20, PAUSE_BUTTON_FILES, 2, false),
+
+	// ==== Score / Stats ====
+	score(renderer),
+	stats(renderer) {}
+
+Game::~Game()
+{
+	TextureManager::Clear();
+}
 
 SDL_AppResult Game::Iter()
 {
@@ -54,18 +75,40 @@ SDL_AppResult Game::EventHandler(SDL_Event* event)
 
 void Game::HandleMouseClick(float x, float y)
 {
-	if (pauseButton.IsClicked(x, y))
+	if (state != GameState::MainScreen && pauseButton.IsClicked(x, y))
 	{
 		TogglePause();
 		return;
 	}
-
-	if (!pause)
+	else if (state == GameState::GameOver && okButton.IsClicked(x, y))
 	{
-		HandleGameAction();
-		if (state == GameState::GameOver && okButton.IsClicked(x, y))
-			Restart();
+		Restart();
+		bird.SetCenterY(WINDOW_CENTER_Y);
+		return;
 	}
+	else if (state == GameState::MainScreen && startButton.IsClicked(x, y))
+	{
+		state = GameState::StartScreen;
+		bird.SetIdleBaseY(WINDOW_CENTER_Y);
+		bird.SetCenterX(WINDOW_CENTER_X);
+		bird.SetCenterY(WINDOW_CENTER_Y);
+		return;
+	}
+	else if (state == GameState::GameOver && menuButton.IsClicked(x, y))
+	{
+		state = GameState::MainScreen;
+		PauseOff();
+		Reset();
+		bird.SetIdleBaseY(100);
+		bird.SetX(450);
+		bird.SetY(100);
+		return;
+	}
+
+	if (pause)
+		return;
+	
+	HandleGameAction();
 }
 
 void Game::HandleKeyPress(const SDL_KeyboardEvent* keyEvent)
@@ -75,12 +118,29 @@ void Game::HandleKeyPress(const SDL_KeyboardEvent* keyEvent)
 
 	switch (keyEvent->scancode)
 	{
-	case SDL_SCANCODE_SPACE:
-		HandleGameAction();
-		break;
-
 	case SDL_SCANCODE_ESCAPE:
 		TogglePause();
+		break;
+
+	case SDL_SCANCODE_SPACE:
+	case SDL_SCANCODE_UP:
+		if (!pause)
+			HandleGameAction();
+		break;
+
+	case SDL_SCANCODE_RETURN:
+		if (state == GameState::GameOver)
+		{
+			Restart();
+			bird.SetCenterY(WINDOW_CENTER_Y);
+		}
+		else if (state == GameState::MainScreen)
+		{
+			state = GameState::StartScreen;
+			bird.SetIdleBaseY(WINDOW_CENTER_Y);
+			bird.SetCenterY(WINDOW_CENTER_Y);
+			bird.SetCenterX(WINDOW_CENTER_X);
+		}
 		break;
 	}
 }
@@ -103,7 +163,7 @@ void Game::RenderDraw()
 {
 	background.RenderDraw(renderer);
 	
-	if (state != GameState::StartScreen)
+	if (state == GameState::Playing || state == GameState::GameOver)
 	{
 		pipePairsManager.RenderDraw(renderer);
 		score.RenderDraw(renderer);
@@ -121,19 +181,30 @@ void Game::RenderDrawUI()
 {
 	switch (state)
 	{
+	case (GameState::MainScreen):
+		flappyBirdBanner.RenderDraw(renderer);
+		startButton.RenderDraw(renderer);
+		break;
+
 	case (GameState::StartScreen):
 		getReadyBanner.RenderDraw(renderer);
 		startBanner.RenderDraw(renderer);
+		pauseButton.RenderDraw(renderer);
 		break;
+
+	case (GameState::Playing):
+		pauseButton.RenderDraw(renderer);
+		break;
+
 	case (GameState::GameOver):
 		gameOverBanner.RenderDraw(renderer);
 		stats.Update(renderer, score.score());
 		stats.RenderDraw(renderer);
+		menuButton.RenderDraw(renderer);
 		okButton.RenderDraw(renderer);
+		pauseButton.RenderDraw(renderer);
 		break;
 	}
-
-	pauseButton.RenderDraw(renderer);
 }
 
 void Game::Update(float deltaTime, Uint64 nowTicks)
@@ -143,6 +214,10 @@ void Game::Update(float deltaTime, Uint64 nowTicks)
 
 	switch (state)
 	{
+	case (GameState::MainScreen):
+		UpdateMainScreen(deltaTime, nowTicks);
+		break;
+
 	case (GameState::StartScreen):
 		UpdateStartScreen(deltaTime, nowTicks);
 		break;
@@ -151,10 +226,18 @@ void Game::Update(float deltaTime, Uint64 nowTicks)
 		UpdatePlaying(deltaTime, nowTicks);
 		break;
 
-	default:
+	case (GameState::GameOver):
 		UpdateGameOver(deltaTime, nowTicks);
 		break;
 	}
+}
+
+void Game::UpdateMainScreen(float deltaTime, Uint64 nowTicks)
+{
+	bird.IdleFly(deltaTime, nowTicks);
+	flappyBirdBanner.SetCenterY(bird.CenterY());
+	background.Update(deltaTime);
+	ground.Update(deltaTime);
 }
 
 void Game::UpdateStartScreen(float deltaTime, Uint64 nowTicks)
@@ -212,7 +295,17 @@ void Game::Reset()
 	score.Reset(renderer);
 }
 
-void Game::TogglePause() {
+void Game::TogglePause()
+{
 	pause = !pause;
 	pauseButton.Switch();
+}
+
+void Game::PauseOff()
+{
+	if (pause)
+	{
+		pause = false;
+		pauseButton.Switch();
+	}
 }

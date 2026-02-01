@@ -10,8 +10,8 @@ public:
     PipePair(SDL_Renderer* renderer, float x);
     ~PipePair() = default;
 
-    inline const SDL_FRect* LowerPipeRect() const { return lowerPipe.Rect(); }
-    inline const SDL_FRect* UpperPipeRect() const { return upperPipe.Rect(); }
+    inline const Pipe* Lower() const { return &lowerPipe; }
+    inline const Pipe* Upper() const { return &upperPipe; }
 
     inline float Left() const { return lowerPipe.Left(); }
     inline float Right() const { return lowerPipe.Right(); }

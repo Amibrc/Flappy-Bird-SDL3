@@ -3,7 +3,6 @@
 #include <SDL3/SDL.h>
 
 #include <vector>
-#include <memory>
 
 #include "GameObject.h"
 
@@ -17,7 +16,7 @@ public:
 	void Update(float deltaTime);
 
 private:
-	std::vector<std::unique_ptr<GameObject>> layerPieces;
+	std::vector<GameObject> layerPieces;
 	float speed;
 };
 

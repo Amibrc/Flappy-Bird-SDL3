@@ -4,34 +4,43 @@
 #include "Collider.h"
 #include "Config.h"
 
-PipePairsManager::PipePairsManager(SDL_Renderer* renderer) 
+PipePairsManager::PipePairsManager(SDL_Renderer* renderer)
 {
-	pipePairs[0] = std::make_unique<PipePair>(renderer, PIPE_PAIRS_START_X);
+	pipePairs.reserve(PIPE_PAIRS_COUNT);
+	pipePairs.emplace_back(renderer, PIPE_PAIRS_START_X);
+
+	if (!pipePairs.front().Lower()->HasTexture())
+	{
+		pipePairs.clear();
+		pipePairs.shrink_to_fit();
+		return;
+	}
+
 	for (int i = 1; i < PIPE_PAIRS_COUNT; ++i)
-		pipePairs[i] = std::make_unique<PipePair>(renderer, pipePairs[i - 1]->Right() + PIPE_PAIRS_DISTANCE);
+		pipePairs.emplace_back(renderer, pipePairs[i - 1].Right() + PIPE_PAIRS_DISTANCE);
 }
 
 void PipePairsManager::RenderDraw(SDL_Renderer* renderer) const
 {
 	for (const auto& pair : pipePairs)
-		if (pair->Left() < WINDOW_WIDTH)
-			pair->RenderDraw(renderer);
+		if (pair.Left() < WINDOW_WIDTH)
+			pair.RenderDraw(renderer);
 }
 
 void PipePairsManager::Update(float deltaTime)
 {
 	for (int i = 0; i < PIPE_PAIRS_COUNT; ++i)
 	{
-		pipePairs[i]->Update(deltaTime);
+		pipePairs[i].Update(deltaTime);
 
-		if (pipePairs[i]->Right() <= 0)
+		if (pipePairs[i].Right() <= 0)
 		{
 			int prevIndex = (i - 1 + PIPE_PAIRS_COUNT) % PIPE_PAIRS_COUNT;
-			float newX = pipePairs[prevIndex]->Right() + PIPE_PAIRS_DISTANCE;
+			float newX = pipePairs[prevIndex].Right() + PIPE_PAIRS_DISTANCE;
 
-			pipePairs[i]->SetRandomGapPosition();
-			pipePairs[i]->SetX(newX);
-			pipePairs[i]->Reset();
+			pipePairs[i].SetRandomGapPosition();
+			pipePairs[i].SetX(newX);
+			pipePairs[i].Reset();
 		}
 	}
 }
@@ -40,20 +49,20 @@ bool PipePairsManager::CheckCollisionWithPipePairs(const SDL_FRect* rect) const
 {
 	for (const auto& pair : pipePairs)
 	{
-		if (Collider::CheckCollision(rect, pair->LowerPipeRect()) ||
-			Collider::CheckCollision(rect, pair->UpperPipeRect()))
+		if (Collider::CheckCollision(rect, pair.Lower()->Rect()) ||
+			Collider::CheckCollision(rect, pair.Upper()->Rect()))
 			return true;
 	}
 	return false;
 }
 
-bool PipePairsManager::IsPassedBy(float targetX) const
+bool PipePairsManager::IsPassedBy(float targetX)
 {
-	for (const auto& pair : pipePairs)
+	for (auto& pair : pipePairs)
 	{
-		if (targetX > pair->Left() && !pair->IsPassedBy())
+		if (targetX > pair.Left() && !pair.IsPassedBy())
 		{
-			pair->Passed();
+			pair.Passed();
 			return true;
 		}
 	}
@@ -62,13 +71,13 @@ bool PipePairsManager::IsPassedBy(float targetX) const
 
 void PipePairsManager::Reset()
 {
-	pipePairs[0]->SetX(PIPE_PAIRS_START_X);
-	pipePairs[0]->SetRandomGapPosition();
-	pipePairs[0]->Reset();
+	pipePairs[0].SetX(PIPE_PAIRS_START_X);
+	pipePairs[0].SetRandomGapPosition();
+	pipePairs[0].Reset();
 	for (int i = 1; i < PIPE_PAIRS_COUNT; ++i)
 	{
-		pipePairs[i]->SetX(pipePairs[i - 1]->Right() + PIPE_PAIRS_DISTANCE);
-		pipePairs[i]->SetRandomGapPosition();
-		pipePairs[i]->Reset();
+		pipePairs[i].SetX(pipePairs[i - 1].Right() + PIPE_PAIRS_DISTANCE);
+		pipePairs[i].SetRandomGapPosition();
+		pipePairs[i].Reset();
 	}
 }

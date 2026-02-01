@@ -2,8 +2,7 @@
 
 #include <SDL3/SDL.h>
 
-#include <array>
-#include <memory>
+#include <vector>
 
 #include "PipePair.h"
 #include "Config.h"
@@ -19,9 +18,9 @@ public:
 	void Reset();
 
 	bool CheckCollisionWithPipePairs(const SDL_FRect* rect) const;
-	bool IsPassedBy(float targetX) const;
+	bool IsPassedBy(float targetX);
 
 private:
-	std::array<std::unique_ptr<PipePair>, PIPE_PAIRS_COUNT> pipePairs;
+	std::vector<PipePair> pipePairs;
 };
 

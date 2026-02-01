@@ -5,13 +5,14 @@
 #include <array>
 
 #include "GameObjectBase.h"
+#include "AnimatedGameObject.h"
 #include "NumberDisplay.h"
 
 class Stats : public GameObjectBase, public NumberDisplay
 {
 public:
 	Stats(SDL_Renderer* renderer);
-	~Stats();
+	~Stats() = default;
 
 	void RenderDraw(SDL_Renderer* renderer) const override;
 	void Update(SDL_Renderer* renderer, size_t score);

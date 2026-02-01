@@ -4,39 +4,23 @@
 #include <array>
 #include <string>
 
+#include "TextureManager.h"
+
 #include "Stats.h"
 #include "Config.h"
 
 Stats::Stats(SDL_Renderer* renderer)
-	: NumberDisplay("-1.png"), statsBannerSurface(IMG_Load(statsBannerFile)),
-	newBannerSurface(IMG_Load(newBannerFile)), texture(nullptr), cachedScore(SIZE_MAX), bestScore(0)
+	: NumberDisplay("-1.png"), statsBannerSurface(TextureManager::GetSurface(STATS_BANNER_FILE)),
+	newBannerSurface(TextureManager::GetSurface(NEW_BANNER_FILE)), texture(nullptr),
+	cachedScore(SIZE_MAX), bestScore(0)
 {
 	if (!statsBannerSurface)
-	{
-		SDL_Log("Error to load surface [%s]", SDL_GetError());
 		rect = { WINDOW_CENTER_X, 300.0f, 0, 0 };
-	}
 	else
 		rect = { WINDOW_CENTER_X - statsBannerSurface->w / 2.0f, 300.0f, (float)statsBannerSurface->w, (float)statsBannerSurface->h };
 
-	if (!newBannerFile)
-		SDL_Log("Error to load surface [%s]", SDL_GetError());
-
 	for (int i = 0; i < 4; ++i)
-	{
-		medalSurfaces[i] = IMG_Load(medalFiles[i]);
-		if (!medalSurfaces[i])
-			SDL_Log("Error to load surface [%s]", SDL_GetError());
-	}
-}
-
-Stats::~Stats()
-{
-	SDL_DestroySurface(statsBannerSurface);
-	SDL_DestroySurface(newBannerSurface);
-
-	for (auto& surf : medalSurfaces)
-		SDL_DestroySurface(surf);
+		medalSurfaces[i] = TextureManager::GetSurface(MEDAL_FILES[i]);
 }
 
 void Stats::RenderDraw(SDL_Renderer* renderer) const

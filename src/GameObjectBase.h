@@ -20,6 +20,9 @@ public:
 	inline float Top() const { return rect.y; }
 	inline float Bottom() const { return rect.y + rect.h; }
 
+	inline float CenterX() const { return rect.x + rect.w / 2.0f; }
+	inline float CenterY() const { return rect.y + rect.h / 2.0f; }
+
 	inline bool IsClicked(float x, float y) const { return Collider::CheckCollision(x, y, &rect); }
 
 	inline void SetX(float newX) { rect.x = newX; }
@@ -37,6 +40,6 @@ public:
 	virtual void RenderDraw(SDL_Renderer* renderer) const = 0;
 
 protected:
-	SDL_FRect rect;
+	SDL_FRect rect; // Must be initialized in the derived class after texture is loaded
 };
 

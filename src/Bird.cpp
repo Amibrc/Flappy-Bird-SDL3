@@ -3,9 +3,9 @@
 #include "Bird.h"
 #include "Config.h"
 
-Bird::Bird(SDL_Renderer* renderer)
-	: AnimatedGameObject(renderer, WINDOW_CENTER_X, WINDOW_CENTER_Y, birdRedFiles, 3, true, 100),
-	idleFlyCounter(0), velocity(0), angle(0), alive(true) {}
+Bird::Bird(SDL_Renderer* renderer, float x, float y, bool isPosCenter)
+	: AnimatedGameObject(renderer, x, y, BIRD_YELLOW_FILES, 3, isPosCenter, 100),
+	idleFlyCounter(0), idleBaseY(rect.y), velocity(0), angle(0), alive(true) {}
 
 void Bird::RenderDraw(SDL_Renderer* renderer) const
 {
@@ -85,13 +85,11 @@ void Bird::Reset()
 	lastTicks = 0;
 	angle = 0;
 	alive = true;
-	SetCenterY(WINDOW_CENTER_Y);
 }
 
 void Bird::IdleFly(float deltaTime, Uint64 nowTicks)
 {
 	AnimatedGameObject::Update(nowTicks);
 	idleFlyCounter += BIRD_COUNTER * deltaTime;
-	SetCenterY(WINDOW_CENTER_Y + sinf(idleFlyCounter) * 8.0f);
+	SetCenterY(idleBaseY + sinf(idleFlyCounter) * 8.0f);
 }
-

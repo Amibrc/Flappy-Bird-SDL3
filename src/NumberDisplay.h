@@ -8,7 +8,7 @@ class NumberDisplay
 {
 public:
 	NumberDisplay(const char* fileSuffix);
-	virtual ~NumberDisplay();
+	virtual ~NumberDisplay() = default;
 
 	virtual SDL_Surface* CreateNumberSurface(size_t number);
 

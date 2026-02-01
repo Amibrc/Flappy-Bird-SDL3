@@ -8,18 +8,19 @@
 class Bird : public AnimatedGameObject
 {
 public:
-	Bird(SDL_Renderer* renderer);
+	Bird(SDL_Renderer* renderer, float x, float y, bool isPosCenter);
 	~Bird() = default;
 
 	inline bool IsAlive() const { return alive; }
+	inline void SetIdleBaseY(float newY) { idleBaseY = newY; }
 
 	void RenderDraw(SDL_Renderer* renderer) const override;
 	void Update(float deltaTime, Uint64 nowTicks);
+	void IdleFly(float deltaTime, Uint64 nowTicks);
 
 	void Flap();
 	void Death();
 	void Reset();
-	void IdleFly(float deltaTime, Uint64 nowTicks);
 
 private:
 	enum class BirbFrames
@@ -30,6 +31,7 @@ private:
 	};
 
 	float idleFlyCounter;
+	float idleBaseY;
 	float velocity;
 	float angle;
 	bool alive;

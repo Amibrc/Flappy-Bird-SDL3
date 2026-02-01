@@ -23,11 +23,3 @@ void AnimatedGameObject::Update(Uint64 nowTicks)
 		lastTicks = nowTicks;
 	}
 }
-
-bool AnimatedGameObject::HasTextures() const
-{
-	for (const auto& tex : textures)
-		if (tex == nullptr)
-			return false;
-	return true;
-}

@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "TextureManager.h"
+
 #include "NumberDisplay.h"
 
 NumberDisplay::NumberDisplay(const char* fileSuffix)
@@ -10,10 +12,7 @@ NumberDisplay::NumberDisplay(const char* fileSuffix)
 	for (int i = 0; i < 10; ++i)
 	{
 		std::string file = "assets/" + std::to_string(i) + fileSuffix;
-		digitSurfaces[i] = IMG_Load(file.c_str());
-
-		if (!digitSurfaces[i])
-			SDL_Log("Error to load surface [%s]", SDL_GetError());
+		digitSurfaces[i] = TextureManager::GetSurface(file.c_str());
 	}
 
 	for (const auto& surf : digitSurfaces)
@@ -28,12 +27,6 @@ NumberDisplay::NumberDisplay(const char* fileSuffix)
 
 	digitW = 0;
 	digitH = 0;
-}
-
-NumberDisplay::~NumberDisplay()
-{
-	for (auto& surface : digitSurfaces)
-		SDL_DestroySurface(surface);
 }
 
 SDL_Surface* NumberDisplay::CreateNumberSurface(size_t number)

@@ -8,7 +8,7 @@ class GameObject : public GameObjectBase
 {
 public:
 	GameObject(SDL_Renderer* renderer, float x, float y, const char* const file, bool isPosCenter);
-	virtual ~GameObject();
+	virtual ~GameObject() = default;
 
 	inline bool HasTexture() const { return texture != nullptr; }
 	virtual void RenderDraw(SDL_Renderer* renderer) const override;

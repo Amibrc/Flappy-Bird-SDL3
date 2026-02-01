@@ -18,10 +18,7 @@ public:
 	virtual void RenderDraw(SDL_Renderer* renderer) const override;
 	virtual void Update(Uint64 nowTicks);
 
-	bool HasTextures() const;
-
 protected:
 	Uint64 frameDuration;
 	Uint64 lastTicks;
 };
-
